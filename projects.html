@@ -504,7 +504,7 @@
 }
 
 </style>
-  <link rel="stylesheet" href="styles_regenerated.css">
+  <link rel="stylesheet" href="styles.css">
 
   <link rel="icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -537,8 +537,10 @@
   <span class="logo-main">ZöD</span>
   <span class="logo-sub">STUDIO</span>
 </a>
-
-        <nav aria-label="Primary navigation">
+<!-- MOBILE MENU BUTTON -->
+  <button class="menu-toggle">Menu</button>
+ <!-- NAVIGATION -->
+  <nav class="mobile-nav" aria-label="Primary navigation">
           <ul>
             <li><a href="#services" data-nav>Services</a></li>
             <li><a href="#approach" data-nav>Approach</a></li>
@@ -599,5 +601,13 @@
 </a>
   </section>
 </main>
+<script>
+const btn = document.querySelector(".menu-toggle");
+const nav = document.querySelector(".mobile-nav");
+
+btn.addEventListener("click", function() {
+  nav.classList.toggle("active");
+});
+</script>
 </body>
 </html>

@@ -666,8 +666,11 @@
   <span class="logo-main">ZöD</span>
   <span class="logo-sub">STUDIO</span>
 </a>
+<!-- MOBILE MENU BUTTON -->
+  <button class="menu-toggle">Menu</button>
+ <!-- NAVIGATION -->
+  <nav class="mobile-nav" aria-label="Primary navigation">
 
-        <nav aria-label="Primary navigation">
           <ul>
             <li><a href="#services" data-nav>Services</a></li>
             <li><a href="#approach" data-nav>Approach</a></li>
@@ -1094,5 +1097,14 @@
     start();
   })();
   </script>
+
+  <script>
+const btn = document.querySelector(".menu-toggle");
+const nav = document.querySelector(".mobile-nav");
+
+btn.addEventListener("click", function() {
+  nav.classList.toggle("active");
+});
+</script>
 </body>
 </html>
