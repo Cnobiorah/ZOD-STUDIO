@@ -1,766 +1,656 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ZöD Studio</title>
-  <meta name="description" content="ZöD Studio is a digital-first architectural practice delivering modern, efficient building designs for homeowners and developers." />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>ZöD Studio — Digital-First Architectural Practice</title>
+  <meta name="description" content="ZöD Studio is a digital-first architectural practice delivering modern, efficient building designs for homeowners and developers."/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
+    /* ─── TOKENS ─────────────────────────────────────────── */
     :root{
-      --bg: #F7F7F5;
-      --ink: #111111;
-      --muted: rgba(17,17,17,.68);
-      --line: rgba(17,17,17,.12);
-      --card: rgba(255,255,255,.70);
-      --shadow: 0 18px 50px rgba(0,0,0,.07);
+      --stone:   #0D0C0A;
+      --ash:     #1A1917;
+      --sand:    #F0EDE7;
+      --warm:    #C8BFB0;
+      --muted:   rgba(240,237,231,.45);
+      --line:    rgba(240,237,231,.12);
+      --accent:  #C9A96E;
+      --accent2: #8FA68C;
+      --r: 3px;
 
-      --accent: #6E7268;
-      --sans: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      --display: "Space Grotesk", "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      --serif:  'Cormorant Garamond', Georgia, serif;
+      --mono:   'DM Mono', 'Courier New', monospace;
+      --body:   'Outfit', system-ui, sans-serif;
 
-      --max: 1140px;
-      --r: 14px;
+      --max: 1280px;
+      --ease: cubic-bezier(.22,.68,0,1.2);
     }
 
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
-    body{
-      margin:0;
-      background: radial-gradient(1200px 800px at 12% 6%, rgba(110,114,104,.10), transparent 60%),
-                  radial-gradient(900px 700px at 92% 18%, rgba(17,17,17,.05), transparent 55%),
-                  var(--bg);
-      color:var(--ink);
-      font-family:var(--sans);
-      line-height:1.55;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+    /* ─── RESET ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; }
+    body {
+      background: var(--stone);
+      color: var(--sand);
+      font-family: var(--body);
+      font-weight:300;
+      line-height:1.6;
+      -webkit-font-smoothing:antialiased;
+      overflow-x:hidden;
+    }
+    a { color:inherit; text-decoration:none; }
+    img { display:block; max-width:100%; }
+
+    /* ─── NOISE OVERLAY ─────────────────────────────────── */
+    body::before {
+      content:'';
+      position:fixed; inset:0; z-index:0; pointer-events:none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity:.028; mix-blend-mode:screen;
     }
 
-    a{ color:inherit; text-decoration:none; }
-    a:hover{ text-decoration:underline; }
+    /* ─── LAYOUT ─────────────────────────────────────────── */
+    .wrap { width:min(var(--max), calc(100% - 48px)); margin:0 auto; position:relative; z-index:1; }
 
-    .container{ width:min(var(--max), calc(100% - 48px)); margin:0 auto; }
-
-    header{
-      position:sticky; top:0; z-index:30;
-      background: color-mix(in oklab, var(--bg) 78%, white 22%);
-      backdrop-filter: blur(12px);
-      border-bottom:1px solid var(--line);
+    /* ─── HEADER ─────────────────────────────────────────── */
+    header {
+      position:fixed; top:0; left:0; right:0; z-index:100;
+      padding:0;
+      transition: background .4s ease;
     }
-    .nav{
-      display:flex; justify-content:space-between; align-items:center; gap:18px;
-      padding:14px 0;
+    header.scrolled {
+      background: rgba(13,12,10,.88);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav {
+      display:flex; justify-content:space-between; align-items:center;
+      padding: 22px 0;
+      transition: padding .4s ease;
+    }
+    header.scrolled .nav { padding: 14px 0; }
+
+    /* Logo */
+    .brand { display:flex; flex-direction:column; line-height:1; user-select:none; }
+    .brand-main {
+      font-family: var(--serif);
+      font-weight: 300;
+      font-size: 32px;
+      letter-spacing:.12em;
+      color: var(--sand);
+      transition: font-size .4s ease;
+    }
+    header.scrolled .brand-main { font-size:26px; }
+    .brand-sub {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing:.42em;
+      text-transform:uppercase;
+      color: var(--accent);
+      margin-top:4px;
     }
 
-    .brand{ display:flex; align-items:center; gap:12px; user-select:none; }
-    .mark{
-      width:34px; height:34px; border-radius:10px;
-      border:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.55));
-      box-shadow: 0 10px 24px rgba(0,0,0,.06);
-      display:grid; place-items:center;
+    /* Nav links */
+    .nav-links {
+      display:flex; align-items:center; gap:6px;
+      list-style:none;
+    }
+    .nav-links a {
+      font-family: var(--mono);
+      font-size:11px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color: var(--warm);
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      transition: all .22s ease;
+    }
+    .nav-links a:hover {
+      color: var(--sand);
+      border-color: var(--line);
+      background: rgba(240,237,231,.06);
+    }
+    .nav-cta {
+      border-color: var(--accent) !important;
+      color: var(--accent) !important;
+    }
+    .nav-cta:hover { background: var(--accent) !important; color: var(--stone) !important; }
+
+    /* Mobile toggle */
+    .menu-btn {
+      display:none;
+      background:none; border:1px solid var(--line); color:var(--sand);
+      font-family:var(--mono); font-size:10px; letter-spacing:.2em; text-transform:uppercase;
+      padding:8px 14px; border-radius:4px; cursor:pointer;
+    }
+
+    /* ─── HERO ───────────────────────────────────────────── */
+    .hero {
+      min-height:100svh;
+      display:flex; flex-direction:column; justify-content:flex-end;
+      padding-bottom:72px;
       position:relative; overflow:hidden;
     }
-    .mark:before{
-      content:"";
-      position:absolute; inset:-40%;
-      background: radial-gradient(circle at 30% 30%, rgba(110,114,104,.35), transparent 55%);
-      transform: rotate(20deg);
-      opacity:.55;
+
+    /* Background image */
+    .hero-bg {
+      position:absolute; inset:0; z-index:0;
+      background-image: url('work2.jpg');
+      background-size:cover; background-position:center;
+      transform: scale(1.04);
+      animation: slowzoom 18s ease-in-out infinite alternate;
     }
-    .mark span{
-      position:relative;
-      font-family:var(--display);
-      font-weight:600;
-      letter-spacing:-.04em;
-      font-size:16px;
-    }
-    .brandtext{ line-height:1.05; }
-    .wordmark{ font-family:var(--display); font-weight:600; font-size:16px; letter-spacing:-.02em; }
-    .submark{
-      font-size:11px; letter-spacing:0.16em; text-transform:uppercase;
-      color:var(--muted); margin-top:2px;
+    @keyframes slowzoom {
+      from { transform: scale(1.04) translate(0,0); }
+      to   { transform: scale(1.08) translate(-8px,-4px); }
     }
 
-    nav ul{
-      display:flex; list-style:none; padding:0; margin:0;
-      gap:6px; align-items:center; flex-wrap:wrap; justify-content:flex-end;
-    }
-    nav a{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:9px 11px;
-      border-radius:999px;
-      font-size:14px;
-      color:var(--muted);
-      border:1px solid transparent;
-    }
-    nav a:hover{
-      text-decoration:none;
-      color:var(--ink);
-      background: rgba(255,255,255,.65);
-      border-color: var(--line);
-    }
-    nav a.active{
-      color:var(--ink);
-      background: rgba(255,255,255,.75);
-      border-color: var(--line);
-    }
-
-    .pill{
-      border:1px solid var(--line);
-      background: rgba(17,17,17,.92);
-      color: var(--bg);
-      box-shadow: 0 10px 26px rgba(0,0,0,.18);
-      font-weight:600;
-    }
-    .pill:hover{ background: rgba(17,17,17,.86); text-decoration:none; }
-
-    .hero{ padding:72px 0 44px; }
-    .hero-grid{
-      display:grid;
-      grid-template-columns: 1.12fr .88fr;
-      gap:20px;
-      align-items:stretch;
-    }
-
-    .kicker{
-      margin:0 0 12px;
-      color: var(--muted);
-      letter-spacing:0.14em;
-      text-transform:uppercase;
-      font-size:12px;
-    }
-    h1{
-      font-family:var(--display);
-      font-weight:600;
-      font-size: clamp(38px, 4.8vw, 58px);
-      line-height:1.04;
-      margin:0 0 14px;
-      letter-spacing:-.03em;
-    }
-    .lead{
-      margin:0 0 22px;
-      color:var(--muted);
-      font-size:16px;
-      max-width:68ch;
-    }
-    .actions{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
-
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center; gap:10px;
-      padding:12px 14px;
-      border-radius:12px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.70);
-      font-size:14px; font-weight:600;
-      cursor:pointer;
-      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
-    }
-    .btn:hover{ text-decoration:none; transform: translateY(-1px); background:white; box-shadow: 0 10px 22px rgba(0,0,0,.08); }
-    .btn.primary{ background: rgba(17,17,17,.92); color:var(--bg); border-color: rgba(17,17,17,.25); }
-    .btn.primary:hover{ background: rgba(17,17,17,.86); }
-
-    .media{
-      border-radius: var(--r);
-      border:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,.78), rgba(255,255,255,.50));
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      position:relative;
-      min-height: 330px;
-    }
-    .media:before{
-      content:"";
-      position:absolute; inset:0;
-      background:
-        radial-gradient(800px 500px at 20% 20%, rgba(110,114,104,.22), transparent 60%),
-        radial-gradient(700px 520px at 80% 60%, rgba(17,17,17,.08), transparent 60%),
-        repeating-linear-gradient(90deg, rgba(17,17,17,.06) 0 1px, transparent 1px 22px);
-      opacity:.75;
-      transform: translate3d(0,0,0);
-      animation: drift 16s ease-in-out infinite alternate;
-    }
-    .media:after{
-      content:"";
-      position:absolute; inset:0;
-      background:
-        repeating-linear-gradient(0deg, rgba(17,17,17,.06) 0 1px, transparent 1px 22px);
-      opacity:.20;
-      pointer-events:none;
-    }
-    @keyframes drift {
-      from { transform: translate(-10px, -6px); }
-      to   { transform: translate(10px, 6px); }
-    }
-
-    .media-inner{
-      position:relative;
-      height:100%;
-      padding:18px;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      gap:14px;
-    }
-
-    .media-top{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
-    .chip{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 10px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.72);
-      color:var(--muted);
-      font-size:12px;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-    }
-
-    .stats{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:10px;
-    }
-    .stat{
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.70);
-      border-radius: 12px;
-      padding:12px;
-      transition: transform .18s ease, box-shadow .18s ease;
-    }
-    .stat:hover{ transform: translateY(-1px); box-shadow: 0 10px 22px rgba(0,0,0,.08); }
-    .stat b{ display:block; font-size:14px; letter-spacing:-.01em; }
-    .stat span{ display:block; margin-top:4px; font-size:12px; color:var(--muted); }
-
-    section.block{ padding:56px 0; border-top:1px solid var(--line); }
-    .head{
-      display:grid; grid-template-columns: .9fr 1.1fr;
-      gap:18px; align-items:start; margin-bottom:18px;
-    }
-    h2{
-      font-family:var(--display);
-      font-weight:600;
-      margin:0;
-      font-size: 28px;
-      line-height:1.12;
-      letter-spacing:-.02em;
-    }
-    .head p{ margin:6px 0 0; color:var(--muted); font-size:15px; max-width:72ch; }
-
-    .cards{ display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; }
-    .card{
-      border:1px solid var(--line);
-      border-radius: var(--r);
-      background: rgba(255,255,255,.72);
-      box-shadow: var(--shadow);
-      padding:16px;
-      min-height: 200px;
-      transition: transform .18s ease, box-shadow .18s ease;
-    }
-    .card:hover{ transform: translateY(-2px); box-shadow: 0 20px 54px rgba(0,0,0,.10); }
-    .card h3{
-      font-family:var(--display);
-      font-weight:600;
-      margin:0 0 8px;
-      font-size:16px;
-      letter-spacing:-.01em;
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-    .card p{ margin:0 0 12px; color:var(--muted); font-size:14px; }
-    .card ul{ margin:0; padding-left:18px; color:var(--muted); font-size:14px; }
-
-    .icon{ width:18px; height:18px; flex:0 0 auto; color: var(--accent); }
-
-    .steps{ display:grid; grid-template-columns: repeat(4, 1fr); gap:12px; }
-    .step{
-      border:1px solid var(--line);
-      border-radius: 14px;
-      background: rgba(255,255,255,.65);
-      padding:14px;
-      transition: transform .18s ease, box-shadow .18s ease;
-    }
-    .step:hover{ transform: translateY(-1px); box-shadow: 0 14px 30px rgba(0,0,0,.08); }
-    .step .n{
-      font-size:12px;
-      letter-spacing:0.14em;
-      text-transform:uppercase;
-      color:var(--muted);
-      display:flex; align-items:center; gap:8px;
-    }
-    .step b{ display:block; margin:10px 0 6px; font-size:14px; }
-    .step p{ margin:0; font-size:13px; color:var(--muted); }
-
-    .workgrid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; }
-    .tile{
-      border:1px solid var(--line);
-      border-radius: var(--r);
-      background: linear-gradient(180deg, rgba(255,255,255,.82), rgba(255,255,255,.55));
-      box-shadow: var(--shadow);
-      height: 190px;
-      position:relative;
-      overflow:hidden;
-      transition: transform .18s ease, box-shadow .18s ease;
-    }
-    .tile:hover{ transform: translateY(-2px); box-shadow: 0 20px 54px rgba(0,0,0,.10); }
-    .tile:before{
-      content:"";
-      position:absolute; inset:0;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(110,114,104,.22), transparent 55%),
-        radial-gradient(circle at 80% 70%, rgba(17,17,17,.08), transparent 58%),
-        repeating-linear-gradient(90deg, rgba(17,17,17,.06) 0 1px, transparent 1px 28px);
-      opacity:.55;
-    }
-    .cap{
-      position:absolute; left:14px; right:14px; bottom:12px;
-      display:flex; justify-content:space-between; gap:10px;
-      font-size:12px; letter-spacing:0.10em; text-transform:uppercase;
-      color:var(--muted);
-    }
-    .tag{ color: var(--accent); font-weight:700; }
-
-    /* Selected work (clickable tiles) */
-    .workgrid{ gap:14px; }
-    .work-actions{ margin-top:14px; }
-
-    .work-tile{
-      position:relative;
-      display:block;
-      height:220px;
-      border-radius:14px;
-      overflow:hidden;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.55);
-      box-shadow: var(--shadow);
-      transform: translateY(0);
-      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
-    }
-
-    .work-media{
-      position:absolute;
-      inset:0;
-      background-size:cover;
-      background-position:center;
-      transform: scale(1.02);
-      transition: transform .4s ease;
-      filter: saturate(.95) contrast(1.02);
-    }
-
-    .work-overlay{
-      position:absolute;
-      inset:0;
+    /* Dark gradient veil */
+    .hero-veil {
+      position:absolute; inset:0; z-index:1;
       background: linear-gradient(
         180deg,
-        rgba(0,0,0,.05) 0%,
-        rgba(0,0,0,.22) 55%,
-        rgba(0,0,0,.55) 100%
+        rgba(13,12,10,.3) 0%,
+        rgba(13,12,10,.1) 35%,
+        rgba(13,12,10,.55) 65%,
+        rgba(13,12,10,.9) 100%
       );
     }
 
-    .work-meta{
-      position:absolute;
-      left:16px;
-      right:16px;
-      bottom:14px;
-      color:#fff;
+    /* Decorative corner lines */
+    .hero-corner {
+      position:absolute; z-index:2; pointer-events:none;
+    }
+    .hero-corner.tl { top:100px; left:24px; width:120px; height:120px;
+      border-top:1px solid rgba(201,169,110,.3); border-left:1px solid rgba(201,169,110,.3); }
+    .hero-corner.br { bottom:72px; right:24px; width:80px; height:80px;
+      border-bottom:1px solid rgba(201,169,110,.3); border-right:1px solid rgba(201,169,110,.3); }
+
+    .hero-content { position:relative; z-index:3; }
+    .hero-label {
+      font-family:var(--mono); font-size:10px; letter-spacing:.35em; text-transform:uppercase;
+      color:var(--accent); margin-bottom:24px;
+      display:flex; align-items:center; gap:12px;
+    }
+    .hero-label::before {
+      content:''; display:block; width:36px; height:1px; background:var(--accent);
     }
 
-    .work-title{
-      font-size:15px;
-      font-weight:600;
-      letter-spacing:.01em;
+    h1 {
+      font-family:var(--serif);
+      font-weight:300;
+      font-size: clamp(48px, 7.5vw, 108px);
+      line-height:.96;
+      letter-spacing:-.01em;
+      color: var(--sand);
+      max-width:16ch;
+      margin-bottom:40px;
     }
+    h1 em { font-style:italic; color:var(--accent); }
 
-    .work-sub{
-      margin-top:8px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      font-size:12px;
+    .hero-footer {
+      display:flex; justify-content:space-between; align-items:flex-end;
+      gap:24px; flex-wrap:wrap;
     }
-
-    .work-tag{
-      padding:6px 10px;
-      border-radius:999px;
-      background: rgba(255,255,255,.16);
-      border:1px solid rgba(255,255,255,.24);
-      letter-spacing:.06em;
-      text-transform:uppercase;
-      backdrop-filter: blur(8px);
+    .hero-lead {
+      color:var(--warm); font-size:15px; max-width:44ch; line-height:1.65;
+      font-weight:300;
     }
+    .hero-actions { display:flex; gap:12px; flex-wrap:wrap; }
 
-    .work-cta{ opacity:.9; }
-
-    .work-tile:hover{
-      transform: translateY(-4px);
-      box-shadow: 0 22px 60px rgba(0,0,0,.15);
-      border-color: rgba(31,31,31,.22);
-      text-decoration:none;
-    }
-    .work-tile:hover .work-media{ transform: scale(1.08); }
-
-    @media (max-width: 980px){
-      .work-tile{ height:200px; }
-    }
-
-    .contact{ display:grid; grid-template-columns: 1fr 1fr; gap:14px; align-items:start; }
-    form{
-      border:1px solid var(--line);
-      border-radius: var(--r);
-      background: rgba(255,255,255,.72);
-      box-shadow: var(--shadow);
-      padding:16px;
-    }
-    label{ display:block; font-size:13px; color:var(--muted); margin:10px 0 6px; }
-    input, textarea{
-      width:100%;
-      padding:12px 12px;
-      border-radius: 12px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.88);
-      font-family: var(--sans);
-      font-size:14px;
-      outline:none;
-    }
-    input:focus, textarea:focus{ border-color: rgba(17,17,17,.35); background:white; }
-    textarea{ min-height:120px; resize:vertical; }
-
-    select{
-      width:100%;
-      padding:12px 12px;
-      border-radius: 12px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.88);
-      font-family: var(--sans);
-      font-size:14px;
-      outline:none;
-    }
-    select:focus{ border-color: rgba(17,17,17,.35); background:white; }
-    .who-for{
-      margin: 12px 0 18px;
-      padding: 12px 14px;
-      border-radius: 14px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.65);
-      color: var(--muted);
-      font-size: 14px;
-      max-width: 70ch;
-    }
-    .who-for b{ color: var(--ink); font-weight: 650; }
-
-
-    .panel{
-      border:1px solid var(--line);
-      border-radius: var(--r);
-      background: rgba(255,255,255,.60);
-      padding:16px;
-      box-shadow: var(--shadow);
-    }
-    .panel h3{ font-family:var(--display); font-weight:600; margin:0 0 8px; font-size:16px; }
-    .panel p{ margin:0; color:var(--muted); font-size:14px; }
-
-    .details{
-      margin-top:12px; padding-top:12px; border-top:1px solid var(--line);
-      display:grid; gap:10px;
-      color:var(--muted); font-size:13px;
-    }
-    .detail{ display:flex; align-items:flex-start; gap:10px; }
-    .detail svg{ width:18px; height:18px; color:var(--accent); margin-top:1px; flex:0 0 auto; }
-
-    footer{ padding:28px 0 44px; color:var(--muted); font-size:13px; }
-    .foot{ display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; }
-    .foot a{ color:var(--muted); }
-    .foot a:hover{ color:var(--ink); }
-
-    .reveal{ opacity:0; transform: translateY(10px); transition: opacity .55s ease, transform .55s ease; }
-    .reveal.in{ opacity:1; transform:none; }
-
-    @media (max-width: 980px){
-      .hero-grid{ grid-template-columns: 1fr; }
-      .head{ grid-template-columns: 1fr; }
-      .cards{ grid-template-columns: 1fr; }
-      .steps{ grid-template-columns: 1fr 1fr; }
-      .workgrid{ grid-template-columns: 1fr; }
-      .contact{ grid-template-columns: 1fr; }
-    }
-  
-/* ===== LOGO (FINAL – stacked text) ===== */
-.brand{
-  display:flex;
-  flex-direction:column;
-  align-items:flex-start;
-  text-decoration:none;
-  line-height:1;
-}
-
-.logo-main{
-  font-family: "DM Serif Display", serif;
-  font-size: 34px;
-  font-weight: 400;
-  letter-spacing: 0;
-  color:#111;
-}
-
-.logo-sub{
-  margin-top:6px;
-  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  font-size:11px;
-  letter-spacing:0.35em;
-  text-transform:uppercase;
-  color:rgba(17,17,17,.65);
-}
-
-
-    /* =========================
-       PROJECT CAROUSEL (INDEX)
-       ========================= */
-    .work-carousel{
-      position:relative;
-      margin-top:18px;
-    }
-
-    .car-viewport{
-      overflow:hidden;
-      border-radius: var(--r);
-    }
-
-    .car-track{
-      display:flex;
-      gap:16px;
-      padding:4px;
-      transition: transform .45s ease;
-      will-change: transform;
-    }
-
-    .proj-card{
-      position:relative;
-      flex: 0 0 calc((100% - 32px) / 3); /* 3 visible on desktop */
-      height: 220px;
-      border-radius: 16px;
-      overflow:hidden;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.6);
-      box-shadow: var(--shadow);
-      text-decoration:none;
-    }
-
-    .proj-media{
-      position:absolute;
-      inset:0;
-      background:#eaeaea;
-      background-size:cover;
-      background-position:center;
-    }
-
-    .proj-overlay{
-      position:absolute;
-      inset:0;
-      background: linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.55));
-    }
-
-    .proj-meta{
-      position:absolute;
-      left:16px;
-      right:16px;
-      bottom:14px;
-      color:#fff;
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-end;
-      gap:14px;
-    }
-
-    .proj-title{
-      font-weight:650;
-      font-size:16px;
-      line-height:1.2;
-      max-width: 72%;
-    }
-
-    .proj-cta{
-      font-size:13px;
-      opacity:.95;
+    /* ─── BUTTONS ────────────────────────────────────────── */
+    .btn {
+      display:inline-flex; align-items:center; gap:10px;
+      font-family:var(--mono); font-size:10px; letter-spacing:.22em; text-transform:uppercase;
+      padding:14px 26px; border-radius:2px; cursor:pointer;
+      transition: all .22s ease;
       white-space:nowrap;
     }
+    .btn-outline {
+      border: 1px solid rgba(240,237,231,.35);
+      color: var(--sand);
+      background:transparent;
+    }
+    .btn-outline:hover {
+      border-color:var(--sand);
+      background:rgba(240,237,231,.08);
+    }
+    .btn-accent {
+      background:var(--accent); color:var(--stone);
+      border:1px solid var(--accent);
+      font-weight:500;
+    }
+    .btn-accent:hover { background:transparent; color:var(--accent); }
 
-    .proj-card:hover .proj-overlay{
-      background: linear-gradient(180deg, rgba(0,0,0,.06), rgba(0,0,0,.62));
+    /* ─── SCROLL INDICATOR ───────────────────────────────── */
+    .scroll-hint {
+      position:absolute; bottom:28px; left:50%; transform:translateX(-50%);
+      z-index:3; display:flex; flex-direction:column; align-items:center; gap:8px;
+    }
+    .scroll-hint span {
+      font-family:var(--mono); font-size:9px; letter-spacing:.3em; text-transform:uppercase;
+      color:var(--muted);
+    }
+    .scroll-line {
+      width:1px; height:40px; background:linear-gradient(180deg,var(--accent),transparent);
+      animation: scroll-pulse 2s ease-in-out infinite;
+    }
+    @keyframes scroll-pulse {
+      0%,100%{ opacity:.4; transform:scaleY(1) translateY(0); }
+      50%{ opacity:1; transform:scaleY(1.2) translateY(4px); }
     }
 
-    .car-btn{
-      position:absolute;
-      top:50%;
-      transform: translateY(-50%);
-      width:42px;
-      height:42px;
-      border-radius:999px;
+    /* ─── SECTION COMMON ─────────────────────────────────── */
+    .section { padding: 120px 0; }
+    .section-label {
+      font-family:var(--mono); font-size:9px; letter-spacing:.4em; text-transform:uppercase;
+      color:var(--accent); margin-bottom:20px;
+      display:flex; align-items:center; gap:10px;
+    }
+    .section-label::after {
+      content:''; flex:1; height:1px; background: linear-gradient(90deg,var(--accent),transparent);
+      max-width:80px;
+    }
+    h2 {
+      font-family:var(--serif); font-weight:300;
+      font-size: clamp(38px, 5vw, 68px);
+      line-height:1.02; letter-spacing:-.01em;
+    }
+    h2 em { font-style:italic; color:var(--accent); }
+
+    /* ─── DIVIDER ────────────────────────────────────────── */
+    .divider { border:none; border-top:1px solid var(--line); }
+
+    /* ─── STATS STRIP ────────────────────────────────────── */
+    .stats-strip {
+      border-top:1px solid var(--line);
+      border-bottom:1px solid var(--line);
+      padding: 32px 0;
+    }
+    .stats-grid {
+      display:grid; grid-template-columns: repeat(4, 1fr);
+      divide-x: 1px solid var(--line);
+    }
+    .stat-item {
+      padding:0 32px; border-right:1px solid var(--line);
+      display:flex; flex-direction:column; gap:4px;
+    }
+    .stat-item:first-child { padding-left:0; }
+    .stat-item:last-child { border-right:none; }
+    .stat-num {
+      font-family:var(--serif); font-size:48px; font-weight:300; line-height:1;
+      color:var(--sand);
+    }
+    .stat-label {
+      font-family:var(--mono); font-size:10px; letter-spacing:.25em; text-transform:uppercase;
+      color:var(--warm);
+    }
+
+    /* ─── SERVICES ───────────────────────────────────────── */
+    .services-grid {
+      display:grid; grid-template-columns: 1fr 1fr;
+      gap: 1px; background:var(--line);
       border:1px solid var(--line);
-      background: rgba(255,255,255,.75);
-      box-shadow: 0 10px 30px rgba(0,0,0,.10);
-      color: var(--ink);
+      margin-top:60px;
+    }
+    .service-card {
+      background:var(--ash); padding:48px 40px;
+      position:relative; overflow:hidden;
+      transition:background .3s ease;
+    }
+    .service-card::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:2px;
+      background:linear-gradient(90deg, var(--accent), transparent);
+      transform:scaleX(0); transform-origin:left;
+      transition: transform .4s var(--ease);
+    }
+    .service-card:hover { background:#1F1E1C; }
+    .service-card:hover::before { transform:scaleX(1); }
+    .service-num {
+      font-family:var(--mono); font-size:10px; letter-spacing:.3em; color:var(--accent);
+      margin-bottom:24px;
+    }
+    .service-card h3 {
+      font-family:var(--serif); font-weight:300; font-size:28px;
+      line-height:1.1; margin-bottom:16px; color:var(--sand);
+    }
+    .service-card p { color:var(--warm); font-size:14px; line-height:1.7; margin-bottom:20px; }
+    .service-list { list-style:none; display:flex; flex-direction:column; gap:8px; }
+    .service-list li {
+      font-family:var(--mono); font-size:10px; letter-spacing:.12em;
+      color:var(--muted); display:flex; align-items:center; gap:10px;
+    }
+    .service-list li::before { content:'—'; color:var(--accent); }
+
+    /* ─── PROCESS ────────────────────────────────────────── */
+    .process-section { background: var(--ash); }
+    .process-grid {
+      display:grid; grid-template-columns: repeat(4,1fr);
+      gap:1px; background:var(--line);
+      border:1px solid var(--line);
+      margin-top:60px;
+    }
+    .process-step {
+      background:var(--stone); padding:40px 28px;
+      position:relative; overflow:hidden;
+    }
+    .step-num-bg {
+      position:absolute; top:-10px; right:16px;
+      font-family:var(--serif); font-size:120px; font-weight:300; line-height:1;
+      color:rgba(201,169,110,.06); user-select:none; pointer-events:none;
+    }
+    .step-num {
+      font-family:var(--mono); font-size:9px; letter-spacing:.4em;
+      color:var(--accent); margin-bottom:28px;
+    }
+    .process-step h4 {
+      font-family:var(--serif); font-weight:300; font-size:22px;
+      color:var(--sand); margin-bottom:12px;
+    }
+    .process-step p { color:var(--warm); font-size:13px; line-height:1.7; }
+
+    /* ─── WORK GRID ──────────────────────────────────────── */
+    .work-intro {
+      display:flex; justify-content:space-between; align-items:flex-end;
+      gap:24px; margin-bottom:48px;
+    }
+    .work-grid {
       display:grid;
-      place-items:center;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: 320px 240px;
+      gap:12px;
+    }
+    .work-item {
+      position:relative; overflow:hidden; border-radius:2px;
+      border:1px solid var(--line);
       cursor:pointer;
-      user-select:none;
+    }
+    .work-item:nth-child(1) { grid-column: span 7; }
+    .work-item:nth-child(2) { grid-column: span 5; }
+    .work-item:nth-child(3) { grid-column: span 4; }
+    .work-item:nth-child(4) { grid-column: span 4; }
+    .work-item:nth-child(5) { grid-column: span 4; }
+
+    .work-img {
+      position:absolute; inset:0;
+      background-size:cover; background-position:center;
+      transition: transform .6s ease, filter .4s ease;
+      filter:saturate(.85);
+    }
+    .work-item:hover .work-img { transform:scale(1.05); filter:saturate(1); }
+
+    .work-overlay {
+      position:absolute; inset:0;
+      background:linear-gradient(180deg, transparent 40%, rgba(13,12,10,.88) 100%);
+      opacity:0; transition:opacity .35s ease;
+    }
+    .work-item:hover .work-overlay { opacity:1; }
+
+    .work-meta {
+      position:absolute; bottom:0; left:0; right:0; padding:24px 20px;
+      transform:translateY(8px); opacity:0;
+      transition:all .35s ease;
+    }
+    .work-item:hover .work-meta { transform:none; opacity:1; }
+    .work-title { font-family:var(--serif); font-size:20px; font-weight:300; color:var(--sand); }
+    .work-tag {
+      margin-top:8px; font-family:var(--mono); font-size:9px; letter-spacing:.25em;
+      text-transform:uppercase; color:var(--accent);
     }
 
-    .car-btn:hover{ background:#fff; }
-    .car-btn.prev{ left:-10px; }
-    .car-btn.next{ right:-10px; }
+    .work-more { margin-top:32px; display:flex; justify-content:flex-end; }
 
-    @media (max-width: 980px){
-      .proj-card{ flex-basis: calc((100% - 16px) / 2); } /* 2 visible */
-      .car-btn.prev{ left:6px; }
-      .car-btn.next{ right:6px; }
+    /* ─── ABOUT STRIP ────────────────────────────────────── */
+    .about-strip {
+      padding:120px 0;
+      display:grid; grid-template-columns: 1fr 1fr;
+      gap:80px; align-items:center;
+    }
+    .about-text h2 { margin-bottom:28px; }
+    .about-text p { color:var(--warm); font-size:15px; line-height:1.8; margin-bottom:20px; }
+    .about-text p:last-of-type { margin-bottom:32px; }
+
+    .about-values { display:grid; gap:1px; background:var(--line); border:1px solid var(--line); }
+    .value-row {
+      display:flex; align-items:center; gap:20px;
+      background:var(--ash); padding:20px 24px;
+      transition:background .25s ease;
+    }
+    .value-row:hover { background:#1F1E1C; }
+    .value-icon {
+      width:32px; height:32px; flex-shrink:0;
+      border:1px solid var(--accent); border-radius:50%;
+      display:grid; place-items:center;
+    }
+    .value-icon svg { width:14px; height:14px; color:var(--accent); }
+    .value-label { font-family:var(--serif); font-size:18px; font-weight:300; color:var(--sand); flex:1; }
+    .value-desc { font-size:12px; color:var(--warm); max-width:22ch; text-align:right; line-height:1.4; }
+
+    /* ─── CONTACT ────────────────────────────────────────── */
+    .contact-section { background:var(--ash); padding:120px 0; }
+    .contact-grid { display:grid; grid-template-columns: 1fr 1fr; gap:80px; margin-top:60px; }
+
+    .contact-details { display:flex; flex-direction:column; gap:32px; }
+    .contact-item {
+      display:flex; gap:20px;
+      padding-bottom:32px; border-bottom:1px solid var(--line);
+    }
+    .contact-item:last-child { border-bottom:none; }
+    .contact-icon {
+      width:44px; height:44px; flex-shrink:0;
+      border:1px solid var(--line); border-radius:2px;
+      display:grid; place-items:center;
+    }
+    .contact-icon svg { width:18px; height:18px; color:var(--accent); }
+    .contact-info-label {
+      font-family:var(--mono); font-size:9px; letter-spacing:.3em;
+      text-transform:uppercase; color:var(--accent); margin-bottom:6px;
+    }
+    .contact-info-val { color:var(--sand); font-size:15px; }
+
+    /* Form */
+    .contact-form { display:flex; flex-direction:column; gap:16px; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .field { display:flex; flex-direction:column; gap:8px; }
+    .field label {
+      font-family:var(--mono); font-size:9px; letter-spacing:.3em;
+      text-transform:uppercase; color:var(--warm);
+    }
+    .field input, .field textarea, .field select {
+      background: rgba(240,237,231,.05);
+      border:1px solid var(--line);
+      border-radius:2px;
+      color:var(--sand);
+      font-family:var(--body); font-size:14px; font-weight:300;
+      padding:14px 16px;
+      outline:none;
+      transition: border-color .2s ease, background .2s ease;
+      width:100%;
+    }
+    .field input::placeholder, .field textarea::placeholder { color:var(--muted); }
+    .field input:focus, .field textarea:focus, .field select:focus {
+      border-color:rgba(201,169,110,.5);
+      background:rgba(240,237,231,.08);
+    }
+    .field select { appearance:none; cursor:pointer; }
+    .field textarea { min-height:120px; resize:vertical; }
+
+    /* ─── FOOTER ─────────────────────────────────────────── */
+    footer {
+      padding:40px 0; border-top:1px solid var(--line);
+    }
+    .foot {
+      display:flex; justify-content:space-between; align-items:center;
+      gap:20px; flex-wrap:wrap;
+    }
+    .foot-brand {
+      font-family:var(--serif); font-size:18px; font-weight:300; color:var(--warm);
+    }
+    .foot-copy {
+      font-family:var(--mono); font-size:9px; letter-spacing:.2em;
+      text-transform:uppercase; color:var(--muted);
+    }
+    .foot-links { display:flex; gap:24px; }
+    .foot-links a {
+      font-family:var(--mono); font-size:10px; letter-spacing:.2em;
+      text-transform:uppercase; color:var(--warm);
+      transition:color .2s;
+    }
+    .foot-links a:hover { color:var(--accent); }
+
+    /* ─── REVEAL ANIMATIONS ──────────────────────────────── */
+    .reveal {
+      opacity:0; transform:translateY(24px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.in { opacity:1; transform:none; }
+    .reveal-delay-1 { transition-delay:.1s; }
+    .reveal-delay-2 { transition-delay:.2s; }
+    .reveal-delay-3 { transition-delay:.3s; }
+    .reveal-delay-4 { transition-delay:.4s; }
+
+    /* ─── MOBILE NAV ─────────────────────────────────────── */
+    @media(max-width:768px){
+      .nav-links { display:none; }
+      .menu-btn { display:block; }
+      .nav-links.open {
+        display:flex; flex-direction:column;
+        position:fixed; inset:0; z-index:200;
+        background:var(--stone);
+        justify-content:center; align-items:center; gap:20px;
+        padding:40px;
+      }
+      .nav-links.open a { font-size:14px; letter-spacing:.2em; padding:14px 24px; }
     }
 
-    @media (max-width: 640px){
-      .proj-card{ flex-basis: 85%; } /* 1 visible-ish */
-      .car-btn{ display:none; }
+    /* ─── RESPONSIVE ─────────────────────────────────────── */
+    @media(max-width:1024px){
+      .about-strip { grid-template-columns:1fr; }
+      .contact-grid { grid-template-columns:1fr; }
     }
-	
-/* === HERO IMAGE (replace placeholder) === */
-.media{
-  background-image: url("hero-render.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-/* remove placeholder grid */
-.media::before,
-.media::after{
-  display:none;
-}
-
-</style>
-  <link rel="stylesheet" href="styles.css">
-
-  <link rel="icon" href="favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    @media(max-width:860px){
+      .services-grid { grid-template-columns:1fr; }
+      .process-grid { grid-template-columns:1fr 1fr; }
+      .stats-grid { grid-template-columns:1fr 1fr; gap:32px; }
+      .stat-item { border-right:none; padding:0; border-bottom:1px solid var(--line); padding-bottom:24px; }
+      .stat-item:last-child { border-bottom:none; padding-bottom:0; }
+      .work-grid { grid-template-columns:1fr 1fr; grid-template-rows:auto; }
+      .work-item:nth-child(n) { grid-column:span 1; }
+      .work-item { height:220px; }
+      .work-overlay { opacity:1; }
+      .work-meta { opacity:1; transform:none; }
+      .form-row { grid-template-columns:1fr; }
+    }
+    @media(max-width:580px){
+      .process-grid { grid-template-columns:1fr; }
+      .work-grid { grid-template-columns:1fr; }
+      h1 { font-size:clamp(40px,11vw,60px); }
+      .hero-footer { flex-direction:column; align-items:flex-start; }
+      .section { padding:80px 0; }
+    }
+  </style>
 </head>
-
 <body>
-  <header>
-    <div class="container">
-      <div class="nav">
-        <a class="brand" href="index.html" aria-label="ZöD Studio Home">
-  <span class="logo-main">ZöD</span>
-  <span class="logo-sub">STUDIO</span>
-</a>
-<!-- MOBILE MENU BUTTON -->
-  <button class="menu-toggle">Menu</button>
- <!-- NAVIGATION -->
-  <nav class="mobile-nav" aria-label="Primary navigation">
 
-          <ul>
-            <li><a href="#services" data-nav>Services</a></li>
-            <li><a href="#approach" data-nav>Approach</a></li>
-            <li><a href="#work" data-nav>Projects</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a class="pill" href="#contact">Contact</a></li>
-            <li><a class="pill" href="https://outlook.office.com/book/ZDStudio@zodstudio.com/" target="_blank" rel="noopener">Book a design conversation</a></li>
-          </ul>
-        </nav>
+  <!-- HEADER -->
+  <header id="hdr">
+    <div class="wrap">
+      <div class="nav">
+        <a href="#" class="brand" aria-label="ZöD Studio Home">
+          <span class="brand-main">ZöD</span>
+          <span class="brand-sub">Studio</span>
+        </a>
+        <button class="menu-btn" id="menuBtn" aria-label="Toggle menu">Menu</button>
+        <ul class="nav-links" id="navLinks" role="list">
+          <li><a href="#services">Services</a></li>
+          <li><a href="#process">Approach</a></li>
+          <li><a href="#work">Projects</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact" class="nav-cta">Contact</a></li>
+        </ul>
       </div>
     </div>
   </header>
 
-  <main id="top" class="container">
-    <section class="hero reveal" aria-label="Hero">
-      <div class="hero-grid">
-        <div>
-          <p class="kicker">Digital-first architectural practice</p>
-          <h1>Architectural design and digital visualisation for early-stage projects — before construction begins.</h1>
-          <p class="lead">
-            ZöD Studio helps homeowners, developers, and design teams explore ideas, test layouts, and visualise proposals so they can make informed decisions before moving into detailed technical drawings or building work.
-          </p>
+  <!-- HERO -->
+  <section class="hero" aria-label="Hero">
+    <div class="hero-bg"></div>
+    <div class="hero-veil"></div>
+    <div class="hero-corner tl"></div>
+    <div class="hero-corner br"></div>
 
-
-          <div class="who-for" aria-label="Who we work with">
-            <b>Who it’s for:</b>
-            Homeowners, developers, and architects who need clear design thinking and compelling digital visualisation.
-          </div>
-          <div class="actions">
-            <a class="btn" href="#work">View projects</a>
-            <a class="btn primary" href="#contact">Contact ZöD Studio</a>
-          
-            <a class="btn primary" href="https://outlook.office.com/book/ZDStudio@zodstudio.com/" target="_blank" rel="noopener">Book a design conversation</a>
-</div>
-        </div>
-
-        <aside class="media reveal" aria-label="Hero media">
-          <div class="media-inner">
-            <div class="media-top">
-              <div class="chip">
-                <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M7 4v6M17 4v6M6 11h12M6 15h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              
-              </div>
-              <div class="chip">
-                <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M12 3v18M3 12h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              
-              </div>
-            </div>
-
-            <div class="stats" role="list" aria-label="Studio principles">
-              <div class="stat" role="listitem"><b>Clarity</b><span>decisions documented</span></div>
-              <div class="stat" role="listitem"><b>Balance</b><span>considered design</span></div>
-              <div class="stat" role="listitem"><b>Delivery</b><span>digital-first workflow</span></div>
-            </div>
-          </div>
-        </aside>
-      </div>
-    </section>
-
-    <section id="services" class="block reveal" aria-label="Services">
-      <div class="head">
-        <h2>Services</h2>
-        <p>
-          ZöD Studio provides clear, professional architectural services — focused on spatial efficiency,
-          buildable solutions, and modern digital delivery.
+    <div class="wrap hero-content">
+      <p class="hero-label">Digital-first architectural practice</p>
+      <h1>Where <em>space</em> meets precision.</h1>
+      <div class="hero-footer">
+        <p class="hero-lead">
+          We help homeowners, developers, and design teams explore ideas, test layouts, and visualise proposals — before a single brick is laid.
         </p>
+        <div class="hero-actions">
+          <a class="btn btn-outline" href="#work">View Projects</a>
+          <a class="btn btn-accent" href="#contact">Start a Conversation</a>
+        </div>
       </div>
+    </div>
 
-      <div class="cards">
-        <article class="card">
-          <h3>
-            <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M4 20V8l8-4 8 4v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 20v-7h6v7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Concept & Spatial Design
-          </h3>
-          <p>Early-stage design direction for new builds and renovations.</p>
-          <ul>
+    <div class="scroll-hint" aria-hidden="true">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- STATS STRIP -->
+  <div class="stats-strip">
+    <div class="wrap">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <span class="stat-num">7+</span>
+          <span class="stat-label">Years Practice</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">60+</span>
+          <span class="stat-label">Projects Delivered</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">3</span>
+          <span class="stat-label">Core Services</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">100%</span>
+          <span class="stat-label">Digital Delivery</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section id="services" class="section" aria-label="Services">
+    <div class="wrap">
+      <p class="section-label reveal">Services</p>
+      <h2 class="reveal reveal-delay-1">What we <em>build</em><br>for you.</h2>
+
+      <div class="services-grid">
+        <article class="service-card reveal">
+          <div class="service-num">01</div>
+          <h3>Concept &<br>Spatial Design</h3>
+          <p>Early-stage design direction for new builds and renovations — grounded in clarity and buildable logic.</p>
+          <ul class="service-list">
             <li>Brief review and scope clarity</li>
             <li>Spatial planning and layout studies</li>
             <li>Concept design development</li>
-            <li>Early visuals (2D/3D)</li>
+            <li>Early visuals — 2D &amp; 3D</li>
           </ul>
         </article>
 
-        <article class="card">
-          <h3>
-            <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M4 7h16v10H4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 11h8M8 14h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            Digital Design & Visualisation
-          </h3>
-          <p>Clear digital representation for approvals and presentations.</p>
-          <ul>
+        <article class="service-card reveal reveal-delay-1">
+          <div class="service-num">02</div>
+          <h3>Digital Design &<br>Visualisation</h3>
+          <p>Compelling digital representation that drives decisions — from planning approvals to stakeholder presentations.</p>
+          <ul class="service-list">
             <li>3D architectural modelling</li>
             <li>High-quality renders and perspectives</li>
             <li>Walkthrough visuals (optional)</li>
@@ -768,343 +658,318 @@
           </ul>
         </article>
 
-        <article class="card">
-          <h3>
-            <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M6 3h12v18H6z" stroke="currentColor" stroke-width="2"/><path d="M9 7h6M9 11h6M9 15h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            Architectural Design Development
-          </h3>
-          <p>Refinement and coordination as your project moves forward.</p>
-          <ul>
+        <article class="service-card reveal reveal-delay-2">
+          <div class="service-num">03</div>
+          <h3>Architectural Design<br>Development</h3>
+          <p>Careful refinement and coordination as your project moves from concept into the technical phase.</p>
+          <ul class="service-list">
             <li>Developed plans and layouts</li>
             <li>Design coordination and refinement</li>
             <li>Drawing package support</li>
-            <li>Preparation for next-stage delivery</li>
+            <li>Next-stage delivery preparation</li>
           </ul>
         </article>
-      </div>
-    </section>
 
-    <section id="approach" class="block reveal" aria-label="Approach">
-      <div class="head">
-        <h2>How we work</h2>
-        <p>
-          A calm, structured process that respects time, budget, and decision-making. Digital-first delivery keeps communication clear and consistent.
-        </p>
-      </div>
-
-      <div class="steps">
-        <div class="step">
-          <div class="n">
-            <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M6 4h12v16H6z" stroke="currentColor" stroke-width="2"/><path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            Step 01
-          </div>
-          <b>Clear brief</b>
-          <p>Define scope, constraints, timeline, and deliverables upfront.</p>
-        </div>
-
-        <div class="step">
-          <div class="n">
-            <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 4v16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            Step 02
-          </div>
-          <b>Concept direction</b>
-          <p>Explore options, agree the strongest path, and document decisions.</p>
-        </div>
-
-        <div class="step">
-          <div class="n">
-            <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M7 17l10-10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M7 7h10v10H7z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-            Step 03
-          </div>
-          <b>Digital development</b>
-          <p>Translate intent into coordinated models and outputs.</p>
-        </div>
-
-        <div class="step">
-          <div class="n">
-            <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M4 20h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M7 17V7l10 10V7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Step 04
-          </div>
-          <b>Refine</b>
-          <p>Iterate with purpose, aligning design, buildability, and goals.</p>
+        <div class="service-card" style="display:flex;flex-direction:column;justify-content:flex-end;background:linear-gradient(135deg,#1A1917,#0D0C0A);">
+          <p style="font-family:var(--serif);font-size:32px;font-weight:300;color:var(--warm);line-height:1.2;margin-bottom:28px;">
+            "Calm, considered, and precise — every time."
+          </p>
+          <a class="btn btn-accent" href="#contact" style="align-self:flex-start;">Book a Consultation</a>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section id="work" class="block reveal" aria-label="Projects">
+  <!-- PROCESS -->
+  <section id="process" class="section process-section" aria-label="Our Approach">
+    <div class="wrap">
+      <p class="section-label reveal">Approach</p>
+      <h2 class="reveal reveal-delay-1">A calm, structured<br><em>process</em>.</h2>
 
-      <div class="head">
-        <h2>Selected work</h2>
-        <p>
-          Hover to pause. Click “View project” to open the full project page with more images and details.
-        </p>
-      </div>
-
-      <div class="work-carousel" id="workCarousel" aria-label="Project carousel">
-        <button class="car-btn prev" type="button" aria-label="Previous projects">‹</button>
-
-        <div class="car-viewport">
-          <div class="car-track" id="workTrack">
-            <!-- Edit titles, links, and image filenames anytime -->
-            <a class="proj-card" href="project.html?id=p1" aria-label="View Residential Concept Study">
-              <div class="proj-media" style="background-image:url('work1.jpg')"></div>
-              <div class="proj-overlay"></div>
-              <div class="proj-meta">
-                <div class="proj-title">4 Bedroom Duplex</div>
-				
-                <div class="proj-cta">View project →</div>
-              </div>
-            </a>
-
-            <a class="proj-card" href="project.html?id=p2" aria-label="View Exterior Visualisation Package">
-              <div class="proj-media" style="background-image:url('work2.jpg')"></div>
-              <div class="proj-overlay"></div>
-              <div class="proj-meta">
-                <div class="proj-title">3 Bedroom Terrace Apartment</div>
-                <div class="proj-cta">View project →</div>
-              </div>
-            </a>
-
-            <a class="proj-card" href="project.html?id=p3" aria-label="View Housing Development Study">
-              <div class="proj-media" style="background-image:url('work3.jpg')"></div>
-              <div class="proj-overlay"></div>
-              <div class="proj-meta">
-                <div class="proj-title">Mobile House</div>
-                <div class="proj-cta">View project →</div>
-              </div>
-            </a>
-
-            <a class="proj-card" href="project.html?id=p4" aria-label="View Interior Visual Study">
-              <div class="proj-media" style="background-image:url('work4.jpg')"></div>
-              <div class="proj-overlay"></div>
-              <div class="proj-meta">
-                <div class="proj-title">3 Bedroom Duplex</div>
-                <div class="proj-cta">View project →</div>
-              </div>
-            </a>
-
-            <a class="proj-card" href="project.html?id=p5" aria-label="View Site Planning Study">
-              <div class="proj-media" style="background-image:url('work5.jpg')"></div>
-              <div class="proj-overlay"></div>
-              <div class="proj-meta">
-                <div class="proj-title">Interior of a bedroom</div>
-                <div class="proj-cta">View project →</div>
-              </div>
-            </a>
-			
-
-            <a class="proj-card" href="project.html?id=p6" aria-label="View Mixed-use Massing Study">
-              <div class="proj-media" style="background-image:url('work6.jpg')"></div>
-              <div class="proj-overlay"></div>
-              <div class="proj-meta">
-                <div class="proj-title">4 Bedroom Duplex</div>
-                <div class="proj-cta">View project →</div>
-              </div>
-            </a>
-          
-            <a class="proj-card" href="project.html?id=p7" aria-label="View Site Planning Study">
-              <div class="proj-media" style="background-image:url('work7.jpg')"></div>
-              <div class="proj-overlay"></div>
-              <div class="proj-meta">
-                <div class="proj-title">3 Bedroom Duplex</div>
-                <div class="proj-cta">View project →</div>
-              </div>
-            </a>
-			</div>
+      <div class="process-grid">
+        <div class="process-step reveal">
+          <div class="step-num-bg">01</div>
+          <div class="step-num">Step — 01</div>
+          <h4>Clear Brief</h4>
+          <p>Define scope, constraints, timeline, and deliverables upfront. No ambiguity, no wasted effort.</p>
         </div>
-		</a>
-		
-        <button class="car-btn next" type="button" aria-label="Next projects">›</button>
+        <div class="process-step reveal reveal-delay-1">
+          <div class="step-num-bg">02</div>
+          <div class="step-num">Step — 02</div>
+          <h4>Concept Direction</h4>
+          <p>Explore options, agree the strongest path, and document decisions before moving forward.</p>
+        </div>
+        <div class="process-step reveal reveal-delay-2">
+          <div class="step-num-bg">03</div>
+          <div class="step-num">Step — 03</div>
+          <h4>Digital Development</h4>
+          <p>Translate intent into coordinated models and polished, communication-ready outputs.</p>
+        </div>
+        <div class="process-step reveal reveal-delay-3">
+          <div class="step-num-bg">04</div>
+          <div class="step-num">Step — 04</div>
+          <h4>Refine &amp; Deliver</h4>
+          <p>Iterate with purpose — aligning design, buildability, and client goals until it's right.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section id="work" class="section" aria-label="Selected Projects">
+    <div class="wrap">
+      <div class="work-intro">
+        <div>
+          <p class="section-label reveal">Selected Work</p>
+          <h2 class="reveal reveal-delay-1">Projects that<br><em>speak</em>.</h2>
+        </div>
+        <a class="btn btn-outline reveal reveal-delay-2" href="projects.html">All Projects →</a>
       </div>
 
-      <div class="work-actions">
-        <a class="btn secondary" href="projects.html">View all projects</a>
-      </div>
-    </section>
-
-    <section id="contact" class="block reveal" aria-label="Contact">
-      <div class="head">
-        <h2>Contact</h2>
-        <p>
-          Have a project in mind? Share the basics and we’ll respond with a clear next step.
-        </p>
-      </div>
-
-      <div class="contact">
-        <form onsubmit="event.preventDefault(); alert('Thanks — connect this form to an email backend next.');">
-          <label for="name">Name</label>
-          <input id="name" name="name" placeholder="Your name" required>
-
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" placeholder="you@example.com" required>
-
-          <label for="ptype">Project type</label>
-          <input id="ptype" name="ptype" placeholder="New build / Renovation / Development / Visualisation">
-          <label for="location">Project location</label>
-          <input id="location" name="location" placeholder="City / Country (or postcode)">
-
-          <label for="stage">Project stage</label>
-          <select id="stage" name="stage">
-            <option value="">Select a stage</option>
-            <option>Concept / Idea</option>
-            <option>Planning / Approval</option>
-            <option>Design development</option>
-            <option>Marketing / Visualisation</option>
-          </select>
-
-          <label for="timeline">Timeline</label>
-          <input id="timeline" name="timeline" placeholder="e.g., 2–4 weeks / ASAP / Specific date">
-
-
-          <label for="msg">Message</label>
-          <textarea id="msg" name="msg" placeholder="Location, timeline, and what you need." required></textarea>
-
-          <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
-            <button class="btn primary" type="submit">Send message</button>
-            <a class="btn" href="mailto:hello@zodstudio.com">Email instead</a>
+      <div class="work-grid">
+        <a class="work-item" href="project.html?id=p2" aria-label="View 3 Bedroom Terrace Apartment">
+          <div class="work-img" style="background-image:url('work2.jpg')"></div>
+          <div class="work-overlay"></div>
+          <div class="work-meta">
+            <div class="work-title">3 Bedroom Terrace Apartment</div>
+            <div class="work-tag">Residential · Exterior</div>
           </div>
+        </a>
+        <a class="work-item" href="project.html?id=p1" aria-label="View 4 Bedroom Duplex">
+          <div class="work-img" style="background-image:url('work1.jpg')"></div>
+          <div class="work-overlay"></div>
+          <div class="work-meta">
+            <div class="work-title">4 Bedroom Duplex</div>
+            <div class="work-tag">Residential · Concept</div>
+          </div>
+        </a>
+        <a class="work-item" href="project.html?id=p3" aria-label="View Mobile House">
+          <div class="work-img" style="background-image:url('work3.jpg')"></div>
+          <div class="work-overlay"></div>
+          <div class="work-meta">
+            <div class="work-title">Mobile House</div>
+            <div class="work-tag">Innovation · Design</div>
+          </div>
+        </a>
+        <a class="work-item" href="project.html?id=p4" aria-label="View 3 Bedroom Duplex">
+          <div class="work-img" style="background-image:url('work4.jpg')"></div>
+          <div class="work-overlay"></div>
+          <div class="work-meta">
+            <div class="work-title">3 Bedroom Duplex</div>
+            <div class="work-tag">Residential · Interior</div>
+          </div>
+        </a>
+        <a class="work-item" href="project.html?id=p5" aria-label="View Interior Study">
+          <div class="work-img" style="background-image:url('work5.jpg')"></div>
+          <div class="work-overlay"></div>
+          <div class="work-meta">
+            <div class="work-title">Bedroom Interior</div>
+            <div class="work-tag">Interior · Visualisation</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" aria-label="About">
+    <div class="wrap">
+      <div class="about-strip">
+        <div class="about-text">
+          <p class="section-label reveal">About</p>
+          <h2 class="reveal reveal-delay-1">Built on<br><em>clarity</em> &amp;<br>balance.</h2>
+          <p class="reveal reveal-delay-2">
+            ZöD Studio is a digital-first architectural practice focused on modern, efficient building design for homeowners and developers. We prioritise decisions that are practical, buildable, and easy to communicate.
+          </p>
+          <p class="reveal reveal-delay-3">
+            We are intentionally evolving toward climate-responsive design — applying principles progressively through continuous learning and practical application.
+          </p>
+          <a class="btn btn-outline reveal reveal-delay-4" href="about.html">Learn More →</a>
+        </div>
+
+        <div class="about-values reveal reveal-delay-2">
+          <div class="value-row">
+            <div class="value-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h16M7 4v6M17 4v6M6 12h12"/></svg>
+            </div>
+            <div class="value-label">Clarity</div>
+            <div class="value-desc">Simple briefs. Clean stages. Decisions documented.</div>
+          </div>
+          <div class="value-row">
+            <div class="value-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v18M3 12h18"/></svg>
+            </div>
+            <div class="value-label">Balance</div>
+            <div class="value-desc">Quality aligned with buildability and budget.</div>
+          </div>
+          <div class="value-row">
+            <div class="value-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 17l7-7 4 4 6-8"/></svg>
+            </div>
+            <div class="value-label">Precision</div>
+            <div class="value-desc">Every drawing, model, and render done right.</div>
+          </div>
+          <div class="value-row">
+            <div class="value-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l7 7-7 13L5 9l7-7z"/></svg>
+            </div>
+            <div class="value-label">Digital Delivery</div>
+            <div class="value-desc">Efficient collaboration. Consistent outputs.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="contact-section" aria-label="Contact">
+    <div class="wrap">
+      <p class="section-label reveal">Contact</p>
+      <h2 class="reveal reveal-delay-1">Let's start <em>talking</em>.</h2>
+
+      <div class="contact-grid">
+        <!-- Details -->
+        <div class="contact-details reveal reveal-delay-1">
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h16v12H4z"/><path d="M4 7l8 6 8-6"/></svg>
+            </div>
+            <div>
+              <div class="contact-info-label">Email</div>
+              <div class="contact-info-val">admin@zodstudio.com</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21s7-5.3 7-12a7 7 0 1 0-14 0c0 6.7 7 12 7 12z"/><circle cx="12" cy="10" r="2"/></svg>
+            </div>
+            <div>
+              <div class="contact-info-label">Delivery</div>
+              <div class="contact-info-val">Remote / Hybrid — Worldwide</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            </div>
+            <div>
+              <div class="contact-info-label">Book a Call</div>
+              <a class="contact-info-val" href="https://outlook.office.com/book/ZDStudio@zodstudio.com/" target="_blank" rel="noopener" style="color:var(--accent);">Schedule a design conversation →</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div>
+              <div class="contact-info-label">We work with</div>
+              <div class="contact-info-val">Homeowners &amp; Developers</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form -->
+        <form class="contact-form reveal reveal-delay-2" onsubmit="handleSubmit(event)">
+          <div class="form-row">
+            <div class="field">
+              <label for="name">Name</label>
+              <input id="name" name="name" placeholder="Your full name" required>
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="you@example.com" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="ptype">Project Type</label>
+              <input id="ptype" name="ptype" placeholder="New build / Renovation / Visualisation">
+            </div>
+            <div class="field">
+              <label for="location">Location</label>
+              <input id="location" name="location" placeholder="City or Country">
+            </div>
+          </div>
+          <div class="field">
+            <label for="stage">Project Stage</label>
+            <select id="stage" name="stage">
+              <option value="">Select a stage</option>
+              <option>Concept / Early Idea</option>
+              <option>Planning / Approval</option>
+              <option>Design Development</option>
+              <option>Marketing / Visualisation</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="msg">Message</label>
+            <textarea id="msg" name="msg" placeholder="Tell us about your project, timeline, and what you're hoping to achieve." required></textarea>
+          </div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+            <button class="btn btn-accent" type="submit">Send Message</button>
+            <a class="btn btn-outline" href="mailto:admin@zodstudio.com">Email Directly</a>
+          </div>
+          <div id="formMsg" style="display:none;margin-top:12px;font-family:var(--mono);font-size:11px;letter-spacing:.15em;color:var(--accent);">Message sent — we'll be in touch shortly.</div>
         </form>
-
-        <aside class="panel">
-          <h3>Details</h3>
-          <p>Minimal, modern, and credible — consistent with the studio tone.</p>
-
-          <div class="details">
-            <div class="detail">
-              <svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16v12H4z" stroke="currentColor" stroke-width="2"/><path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <div><b>Email:</b> admin@zodstudio.com</div>
-            </div>
-            <div class="detail">
-              <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s7-5.3 7-12a7 7 0 1 0-14 0c0 6.7 7 12 7 12z" stroke="currentColor" stroke-width="2"/><path d="M12 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" stroke="currentColor" stroke-width="2"/></svg>
-              <div><b>Delivery:</b> Remote / Hybrid</div>
-            </div>
-            <div class="detail">
-              <svg viewBox="0 0 24 24" fill="none"><path d="M3 11h18v10H3z" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <div><b>Focus:</b> Homeowners & Developers</div>
-            </div>
-          </div>
-
-          <div style="margin-top:14px; padding-top:12px; border-top:1px solid var(--line); color:var(--muted); font-size:13px;">
-            <a href="https://outlook.office.com/book/ZDStudio@zodstudio.com/"
-   target="_blank"
-   class="btn primary">
-  Book a consultation
-</a>
-
-          </div>
-        </aside>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <footer class="reveal">
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap">
       <div class="foot">
-        <div>© <span id="y"></span> ZöD Studio. All rights reserved.</div>
-        <div style="display:flex; gap:14px; flex-wrap:wrap;">
+        <div>
+          <div class="foot-brand">ZöD Studio</div>
+          <div class="foot-copy" style="margin-top:6px;">© <span id="y"></span> All rights reserved.</div>
+        </div>
+        <nav class="foot-links" aria-label="Footer navigation">
           <a href="#services">Services</a>
           <a href="about.html">About</a>
+          <a href="projects.html">Projects</a>
           <a href="#contact">Contact</a>
-          <a href="#top">Back to top</a>
-        </div>
+        </nav>
       </div>
-    </footer>
-  </main>
+    </div>
+  </footer>
 
   <script>
-    document.getElementById("y").textContent = new Date().getFullYear();
+    // Year
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Header scroll
+    const hdr = document.getElementById('hdr');
+    window.addEventListener('scroll', () => {
+      hdr.classList.toggle('scrolled', window.scrollY > 30);
+    }, { passive:true });
 
     // Reveal on scroll
-    const els = document.querySelectorAll(".reveal");
+    const reveals = document.querySelectorAll('.reveal');
     const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("in"); });
-    }, { threshold: 0.12 });
-    els.forEach(el => io.observe(el));
+      entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
+    }, { threshold:.12 });
+    reveals.forEach(el => io.observe(el));
 
-    // Active nav highlight
-    const navLinks = Array.from(document.querySelectorAll('a[data-nav]'));
-    const sections = navLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
-    const navIO = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        const idx = sections.indexOf(entry.target);
-        if (idx >= 0 && entry.isIntersecting) {
-          navLinks.forEach(a => a.classList.remove('active'));
-          navLinks[idx].classList.add('active');
-        }
+    // Mobile nav
+    const menuBtn = document.getElementById('menuBtn');
+    const navLinks = document.getElementById('navLinks');
+    menuBtn.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+      menuBtn.textContent = navLinks.classList.contains('open') ? 'Close' : 'Menu';
+    });
+    navLinks.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        menuBtn.textContent = 'Menu';
       });
-    }, { rootMargin: "-35% 0px -55% 0px", threshold: 0.01 });
-    sections.forEach(s => navIO.observe(s));
+    });
+
+    // Form
+    function handleSubmit(e) {
+      e.preventDefault();
+      const msg = document.getElementById('formMsg');
+      msg.style.display = 'block';
+      e.target.querySelectorAll('input,textarea,select,button').forEach(el => el.disabled = true);
+    }
   </script>
-
-  <script>
-  (function(){
-    const track = document.getElementById('workTrack');
-    const carousel = document.getElementById('workCarousel');
-    if(!track || !carousel) return;
-
-    const prevBtn = carousel.querySelector('.car-btn.prev');
-    const nextBtn = carousel.querySelector('.car-btn.next');
-    const cards = Array.from(track.querySelectorAll('.proj-card'));
-    if(cards.length === 0) return;
-
-    let index = 0;
-    let timer = null;
-    const intervalMs = 7000; // slides every ~7 seconds (5–10s range)
-
-    function cardsPerView(){
-      const w = window.innerWidth;
-      if(w <= 640) return 1;
-      if(w <= 980) return 2;
-      return 3;
-    }
-
-    function stepWidth(){
-      const card = cards[0];
-      const style = getComputedStyle(track);
-      const gap = parseFloat(style.gap || style.columnGap || 16) || 16;
-      return card.getBoundingClientRect().width + gap;
-    }
-
-    function maxIndex(){
-      return Math.max(0, cards.length - cardsPerView());
-    }
-
-    function go(i){
-      index = Math.min(Math.max(i, 0), maxIndex());
-      const x = stepWidth() * index;
-      track.style.transform = `translateX(${-x}px)`;
-    }
-
-    function next(){ go(index + 1 > maxIndex() ? 0 : index + 1); }
-    function prev(){ go(index - 1 < 0 ? maxIndex() : index - 1); }
-
-    function start(){
-      stop();
-      timer = setInterval(next, intervalMs);
-    }
-    function stop(){
-      if(timer){ clearInterval(timer); timer = null; }
-    }
-
-    // Pause on hover so you can click
-    carousel.addEventListener('mouseenter', stop);
-    carousel.addEventListener('mouseleave', start);
-
-    if(nextBtn) nextBtn.addEventListener('click', () => { stop(); next(); start(); });
-    if(prevBtn) prevBtn.addEventListener('click', () => { stop(); prev(); start(); });
-
-    window.addEventListener('resize', () => go(index), { passive:true });
-
-    go(0);
-    start();
-  })();
-  </script>
-
-  <script>
-const btn = document.querySelector(".menu-toggle");
-const nav = document.querySelector(".mobile-nav");
-
-btn.addEventListener("click", function() {
-  nav.classList.toggle("active");
-});
-</script>
 </body>
 </html>

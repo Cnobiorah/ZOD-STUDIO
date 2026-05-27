@@ -1,613 +1,329 @@
 <!doctype html>
 <html lang="en">
 <head>
-
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Projects — ZöD Studio</title>
-  <meta name="description" content="ZöD Studio is a digital-first architectural practice delivering modern, efficient building designs for homeowners and developers." />
+  <meta name="description" content="All projects by ZöD Studio — architectural design and digital visualisation for homeowners and developers."/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg: #F7F7F5;
-      --ink: #111111;
-      --muted: rgba(17,17,17,.68);
-      --line: rgba(17,17,17,.12);
-      --card: rgba(255,255,255,.70);
-      --shadow: 0 18px 50px rgba(0,0,0,.07);
+      --stone:#0D0C0A; --ash:#1A1917; --sand:#F0EDE7; --warm:#C8BFB0;
+      --muted:rgba(240,237,231,.45); --line:rgba(240,237,231,.12);
+      --accent:#C9A96E;
+      --serif:'Cormorant Garamond',Georgia,serif;
+      --mono:'DM Mono','Courier New',monospace;
+      --body:'Outfit',system-ui,sans-serif;
+      --max:1280px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--stone);color:var(--sand);font-family:var(--body);font-weight:300;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+    a{color:inherit;text-decoration:none;}
 
-      --accent: #6E7268;
-      --sans: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      --display: "Space Grotesk", "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:.028;mix-blend-mode:screen;}
 
-      --max: 1140px;
-      --r: 14px;
-    }
+    .wrap{width:min(var(--max),calc(100% - 48px));margin:0 auto;position:relative;z-index:1;}
 
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
-    body{
-      margin:0;
-      background: radial-gradient(1200px 800px at 12% 6%, rgba(110,114,104,.10), transparent 60%),
-                  radial-gradient(900px 700px at 92% 18%, rgba(17,17,17,.05), transparent 55%),
-                  var(--bg);
-      color:var(--ink);
-      font-family:var(--sans);
-      line-height:1.55;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
+    /* HEADER */
+    header{position:fixed;top:0;left:0;right:0;z-index:100;transition:background .4s ease;}
+    header.scrolled{background:rgba(13,12,10,.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--line);}
+    .nav{display:flex;justify-content:space-between;align-items:center;padding:22px 0;transition:padding .4s ease;}
+    header.scrolled .nav{padding:14px 0;}
+    .brand{display:flex;flex-direction:column;line-height:1;user-select:none;}
+    .brand-main{font-family:var(--serif);font-weight:300;font-size:32px;letter-spacing:.12em;color:var(--sand);transition:font-size .4s ease;}
+    header.scrolled .brand-main{font-size:26px;}
+    .brand-sub{font-family:var(--mono);font-size:9px;letter-spacing:.42em;text-transform:uppercase;color:var(--accent);margin-top:4px;}
+    .nav-links{display:flex;align-items:center;gap:6px;list-style:none;}
+    .nav-links a{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--warm);padding:8px 14px;border-radius:999px;border:1px solid transparent;transition:all .22s ease;}
+    .nav-links a:hover{color:var(--sand);border-color:var(--line);background:rgba(240,237,231,.06);}
+    .nav-cta{border-color:var(--accent)!important;color:var(--accent)!important;}
+    .nav-cta:hover{background:var(--accent)!important;color:var(--stone)!important;}
+    .menu-btn{display:none;background:none;border:1px solid var(--line);color:var(--sand);font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;padding:8px 14px;border-radius:4px;cursor:pointer;}
 
-    a{ color:inherit; text-decoration:none; }
-    a:hover{ text-decoration:underline; }
+    /* PAGE HEADER */
+    .page-header{padding:160px 0 80px;border-bottom:1px solid var(--line);position:relative;overflow:hidden;}
+    .page-header::before{content:'PROJECTS';position:absolute;right:-20px;bottom:-50px;font-family:var(--serif);font-size:200px;font-weight:300;line-height:1;color:rgba(201,169,110,.04);user-select:none;pointer-events:none;white-space:nowrap;}
+    .page-label{font-family:var(--mono);font-size:9px;letter-spacing:.4em;text-transform:uppercase;color:var(--accent);margin-bottom:20px;display:flex;align-items:center;gap:10px;}
+    .page-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--accent),transparent);max-width:80px;}
+    h1{font-family:var(--serif);font-weight:300;font-size:clamp(48px,6.5vw,88px);line-height:.96;letter-spacing:-.01em;}
+    h1 em{font-style:italic;color:var(--accent);}
+    .header-row{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;}
+    .page-lead{color:var(--warm);font-size:15px;max-width:42ch;line-height:1.7;margin-top:20px;}
 
-    .container{ width:min(var(--max), calc(100% - 48px)); margin:0 auto; }
+    /* FILTERS */
+    .filters{padding:32px 0;border-bottom:1px solid var(--line);display:flex;gap:8px;flex-wrap:wrap;}
+    .filter-btn{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;padding:8px 18px;border-radius:999px;border:1px solid var(--line);color:var(--warm);background:transparent;cursor:pointer;transition:all .2s ease;}
+    .filter-btn:hover,.filter-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(201,169,110,.06);}
 
-    header{
-      position:sticky; top:0; z-index:30;
-      background: color-mix(in oklab, var(--bg) 78%, white 22%);
-      backdrop-filter: blur(12px);
-      border-bottom:1px solid var(--line);
-    }
-    .nav{
-      display:flex; justify-content:space-between; align-items:center; gap:18px;
-      padding:14px 0;
-    }
+    /* PROJECTS GRID */
+    .projects-section{padding:60px 0 100px;}
+    .proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+    @media(max-width:1024px){.proj-grid{grid-template-columns:repeat(2,1fr);}}
+    @media(max-width:580px){.proj-grid{grid-template-columns:1fr;}}
 
-    .brand{ display:flex; align-items:center; gap:12px; user-select:none; }
-    .mark{
-      width:34px; height:34px; border-radius:10px;
-      border:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.55));
-      box-shadow: 0 10px 24px rgba(0,0,0,.06);
-      display:grid; place-items:center;
-      position:relative; overflow:hidden;
+    .proj-card{
+      position:relative;display:block;
+      border-radius:2px;overflow:hidden;border:1px solid var(--line);
+      background:var(--ash);
+      transition:border-color .3s ease,transform .3s ease;
     }
-    .mark:before{
-      content:"";
-      position:absolute; inset:-40%;
-      background: radial-gradient(circle at 30% 30%, rgba(110,114,104,.35), transparent 55%);
-      transform: rotate(20deg);
-      opacity:.55;
-    }
-    .mark span{
-      position:relative;
-      font-family:var(--display);
-      font-weight:600;
-      letter-spacing:-.04em;
-      font-size:16px;
-    }
-    .brandtext{ line-height:1.05; }
-    .wordmark{ font-family:var(--display); font-weight:600; font-size:16px; letter-spacing:-.02em; }
-    .submark{
-      font-size:11px; letter-spacing:0.16em; text-transform:uppercase;
-      color:var(--muted); margin-top:2px;
-    }
+    .proj-card:hover{border-color:rgba(201,169,110,.3);transform:translateY(-4px);}
 
-    nav ul{
-      display:flex; list-style:none; padding:0; margin:0;
-      gap:6px; align-items:center; flex-wrap:wrap; justify-content:flex-end;
+    .proj-img{
+      width:100%;height:260px;
+      background-size:cover;background-position:center;
+      transition:transform .5s ease,filter .4s ease;
+      filter:saturate(.85);
     }
-    nav a{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:9px 11px;
-      border-radius:999px;
-      font-size:14px;
-      color:var(--muted);
-      border:1px solid transparent;
-    }
-    nav a:hover{
-      text-decoration:none;
-      color:var(--ink);
-      background: rgba(255,255,255,.65);
-      border-color: var(--line);
-    }
-    nav a.active{
-      color:var(--ink);
-      background: rgba(255,255,255,.75);
-      border-color: var(--line);
+    .proj-card:hover .proj-img{transform:scale(1.04);filter:saturate(1);}
+
+    .proj-overlay{
+      position:absolute;inset:0;
+      background:linear-gradient(180deg,transparent 45%,rgba(13,12,10,.9) 100%);
+      transition:opacity .3s ease;
     }
 
-    .pill{
-      border:1px solid var(--line);
-      background: rgba(17,17,17,.92);
-      color: var(--bg);
-      box-shadow: 0 10px 26px rgba(0,0,0,.18);
-      font-weight:600;
-    }
-    .pill:hover{ background: rgba(17,17,17,.86); text-decoration:none; }
+    .proj-meta{position:absolute;bottom:0;left:0;right:0;padding:24px 22px;}
+    .proj-tag{font-family:var(--mono);font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;}
+    .proj-title{font-family:var(--serif);font-size:22px;font-weight:300;color:var(--sand);line-height:1.2;margin-bottom:10px;}
+    .proj-cta{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--warm);opacity:0;transform:translateY(6px);transition:all .3s ease;}
+    .proj-card:hover .proj-cta{opacity:1;transform:none;}
 
-    .hero{ padding:72px 0 44px; }
-    .hero-grid{
-      display:grid;
-      grid-template-columns: 1.12fr .88fr;
-      gap:20px;
-      align-items:stretch;
-    }
+    /* FEATURED (first card spans 2 cols) */
+    .proj-card.featured{grid-column:span 2;}
+    .proj-card.featured .proj-img{height:400px;}
+    .proj-card.featured .proj-title{font-size:32px;}
+    @media(max-width:1024px){.proj-card.featured{grid-column:span 1;}}
+    @media(max-width:1024px){.proj-card.featured .proj-img{height:260px;}}
+    @media(max-width:1024px){.proj-card.featured .proj-title{font-size:22px;}}
 
-    .kicker{
-      margin:0 0 12px;
-      color: var(--muted);
-      letter-spacing:0.14em;
-      text-transform:uppercase;
-      font-size:12px;
-    }
-    h1{
-      font-family:var(--display);
-      font-weight:600;
-      font-size: clamp(38px, 4.8vw, 58px);
-      line-height:1.04;
-      margin:0 0 14px;
-      letter-spacing:-.03em;
-    }
-    .lead{
-      margin:0 0 22px;
-      color:var(--muted);
-      font-size:16px;
-      max-width:68ch;
-    }
-    .actions{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    /* CTA */
+    .bottom-cta{padding:60px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;}
+    .bottom-cta p{font-family:var(--serif);font-size:28px;font-weight:300;color:var(--warm);max-width:32ch;line-height:1.3;}
+    .bottom-cta p em{font-style:italic;color:var(--accent);}
 
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center; gap:10px;
-      padding:12px 14px;
-      border-radius:12px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.70);
-      font-size:14px; font-weight:600;
-      cursor:pointer;
-      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
-    }
-    .btn:hover{ text-decoration:none; transform: translateY(-1px); background:white; box-shadow: 0 10px 22px rgba(0,0,0,.08); }
-    .btn.primary{ background: rgba(17,17,17,.92); color:var(--bg); border-color: rgba(17,17,17,.25); }
-    .btn.primary:hover{ background: rgba(17,17,17,.86); }
+    /* BUTTONS */
+    .btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;padding:14px 26px;border-radius:2px;cursor:pointer;transition:all .22s ease;white-space:nowrap;}
+    .btn-outline{border:1px solid rgba(240,237,231,.35);color:var(--sand);background:transparent;}
+    .btn-outline:hover{border-color:var(--sand);background:rgba(240,237,231,.08);}
+    .btn-accent{background:var(--accent);color:var(--stone);border:1px solid var(--accent);font-weight:500;}
+    .btn-accent:hover{background:transparent;color:var(--accent);}
 
-    .media{
-      border-radius: var(--r);
-      border:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,.78), rgba(255,255,255,.50));
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      position:relative;
-      min-height: 330px;
-    }
-    .media:before{
-      content:"";
-      position:absolute; inset:0;
-      background:
-        radial-gradient(800px 500px at 20% 20%, rgba(110,114,104,.22), transparent 60%),
-        radial-gradient(700px 520px at 80% 60%, rgba(17,17,17,.08), transparent 60%),
-        repeating-linear-gradient(90deg, rgba(17,17,17,.06) 0 1px, transparent 1px 22px);
-      opacity:.75;
-      transform: translate3d(0,0,0);
-      animation: drift 16s ease-in-out infinite alternate;
-    }
-    .media:after{
-      content:"";
-      position:absolute; inset:0;
-      background:
-        repeating-linear-gradient(0deg, rgba(17,17,17,.06) 0 1px, transparent 1px 22px);
-      opacity:.20;
-      pointer-events:none;
-    }
-    @keyframes drift {
-      from { transform: translate(-10px, -6px); }
-      to   { transform: translate(10px, 6px); }
-    }
+    /* FOOTER */
+    footer{padding:40px 0;border-top:1px solid var(--line);}
+    .foot{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;}
+    .foot-brand{font-family:var(--serif);font-size:18px;font-weight:300;color:var(--warm);}
+    .foot-copy{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);}
+    .foot-links{display:flex;gap:24px;}
+    .foot-links a{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--warm);transition:color .2s;}
+    .foot-links a:hover{color:var(--accent);}
 
-    .media-inner{
-      position:relative;
-      height:100%;
-      padding:18px;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      gap:14px;
+    /* REVEAL */
+    .reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease;}
+    .reveal.in{opacity:1;transform:none;}
+    .reveal-delay-1{transition-delay:.08s;}
+    .reveal-delay-2{transition-delay:.16s;}
+    .reveal-delay-3{transition-delay:.24s;}
+    .reveal-delay-4{transition-delay:.32s;}
+    .reveal-delay-5{transition-delay:.40s;}
+    .reveal-delay-6{transition-delay:.48s;}
+
+    /* MOBILE NAV */
+    @media(max-width:768px){
+      .nav-links{display:none;}
+      .menu-btn{display:block;}
+      .nav-links.open{display:flex;flex-direction:column;position:fixed;inset:0;z-index:200;background:var(--stone);justify-content:center;align-items:center;gap:20px;padding:40px;}
+      .bottom-cta{flex-direction:column;align-items:flex-start;}
     }
-
-    .media-top{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
-    .chip{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 10px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.72);
-      color:var(--muted);
-      font-size:12px;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-    }
-
-    .stats{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:10px;
-    }
-    .stat{
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.70);
-      border-radius: 12px;
-      padding:12px;
-      transition: transform .18s ease, box-shadow .18s ease;
-    }
-    .stat:hover{ transform: translateY(-1px); box-shadow: 0 10px 22px rgba(0,0,0,.08); }
-    .stat b{ display:block; font-size:14px; letter-spacing:-.01em; }
-    .stat span{ display:block; margin-top:4px; font-size:12px; color:var(--muted); }
-
-    section.block{ padding:56px 0; border-top:1px solid var(--line); }
-    .head{
-      display:grid; grid-template-columns: .9fr 1.1fr;
-      gap:18px; align-items:start; margin-bottom:18px;
-    }
-    h2{
-      font-family:var(--display);
-      font-weight:600;
-      margin:0;
-      font-size: 28px;
-      line-height:1.12;
-      letter-spacing:-.02em;
-    }
-    .head p{ margin:6px 0 0; color:var(--muted); font-size:15px; max-width:72ch; }
-
-    .cards{ display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; }
-    .card{
-      border:1px solid var(--line);
-      border-radius: var(--r);
-      background: rgba(255,255,255,.72);
-      box-shadow: var(--shadow);
-      padding:16px;
-      min-height: 200px;
-      transition: transform .18s ease, box-shadow .18s ease;
-    }
-    .card:hover{ transform: translateY(-2px); box-shadow: 0 20px 54px rgba(0,0,0,.10); }
-    .card h3{
-      font-family:var(--display);
-      font-weight:600;
-      margin:0 0 8px;
-      font-size:16px;
-      letter-spacing:-.01em;
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-    .card p{ margin:0 0 12px; color:var(--muted); font-size:14px; }
-    .card ul{ margin:0; padding-left:18px; color:var(--muted); font-size:14px; }
-
-    .icon{ width:18px; height:18px; flex:0 0 auto; color: var(--accent); }
-
-    .steps{ display:grid; grid-template-columns: repeat(4, 1fr); gap:12px; }
-    .step{
-      border:1px solid var(--line);
-      border-radius: 14px;
-      background: rgba(255,255,255,.65);
-      padding:14px;
-      transition: transform .18s ease, box-shadow .18s ease;
-    }
-    .step:hover{ transform: translateY(-1px); box-shadow: 0 14px 30px rgba(0,0,0,.08); }
-    .step .n{
-      font-size:12px;
-      letter-spacing:0.14em;
-      text-transform:uppercase;
-      color:var(--muted);
-      display:flex; align-items:center; gap:8px;
-    }
-    .step b{ display:block; margin:10px 0 6px; font-size:14px; }
-    .step p{ margin:0; font-size:13px; color:var(--muted); }
-
-    .workgrid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; }
-    .tile{
-      border:1px solid var(--line);
-      border-radius: var(--r);
-      background: linear-gradient(180deg, rgba(255,255,255,.82), rgba(255,255,255,.55));
-      box-shadow: var(--shadow);
-      height: 190px;
-      position:relative;
-      overflow:hidden;
-      transition: transform .18s ease, box-shadow .18s ease;
-    }
-    .tile:hover{ transform: translateY(-2px); box-shadow: 0 20px 54px rgba(0,0,0,.10); }
-    .tile:before{
-      content:"";
-      position:absolute; inset:0;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(110,114,104,.22), transparent 55%),
-        radial-gradient(circle at 80% 70%, rgba(17,17,17,.08), transparent 58%),
-        repeating-linear-gradient(90deg, rgba(17,17,17,.06) 0 1px, transparent 1px 28px);
-      opacity:.55;
-    }
-    .cap{
-      position:absolute; left:14px; right:14px; bottom:12px;
-      display:flex; justify-content:space-between; gap:10px;
-      font-size:12px; letter-spacing:0.10em; text-transform:uppercase;
-      color:var(--muted);
-    }
-    .tag{ color: var(--accent); font-weight:700; }
-
-    /* Selected work (clickable tiles) */
-    .workgrid{ gap:14px; }
-    .work-actions{ margin-top:14px; }
-
-    .work-tile{
-      position:relative;
-      display:block;
-      height:220px;
-      border-radius:14px;
-      overflow:hidden;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.55);
-      box-shadow: var(--shadow);
-      transform: translateY(0);
-      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
-    }
-
-    .work-media{
-      position:absolute;
-      inset:0;
-      background-size:cover;
-      background-position:center;
-      transform: scale(1.02);
-      transition: transform .4s ease;
-      filter: saturate(.95) contrast(1.02);
-    }
-
-    .work-overlay{
-      position:absolute;
-      inset:0;
-      background: linear-gradient(
-        180deg,
-        rgba(0,0,0,.05) 0%,
-        rgba(0,0,0,.22) 55%,
-        rgba(0,0,0,.55) 100%
-      );
-    }
-
-    .work-meta{
-      position:absolute;
-      left:16px;
-      right:16px;
-      bottom:14px;
-      color:#fff;
-    }
-
-    .work-title{
-      font-size:15px;
-      font-weight:600;
-      letter-spacing:.01em;
-    }
-
-    .work-sub{
-      margin-top:8px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      font-size:12px;
-    }
-
-    .work-tag{
-      padding:6px 10px;
-      border-radius:999px;
-      background: rgba(255,255,255,.16);
-      border:1px solid rgba(255,255,255,.24);
-      letter-spacing:.06em;
-      text-transform:uppercase;
-      backdrop-filter: blur(8px);
-    }
-
-    .work-cta{ opacity:.9; }
-
-    .work-tile:hover{
-      transform: translateY(-4px);
-      box-shadow: 0 22px 60px rgba(0,0,0,.15);
-      border-color: rgba(31,31,31,.22);
-      text-decoration:none;
-    }
-    .work-tile:hover .work-media{ transform: scale(1.08); }
-
-    @media (max-width: 980px){
-      .work-tile{ height:200px; }
-    }
-
-    .contact{ display:grid; grid-template-columns: 1fr 1fr; gap:14px; align-items:start; }
-    form{
-      border:1px solid var(--line);
-      border-radius: var(--r);
-      background: rgba(255,255,255,.72);
-      box-shadow: var(--shadow);
-      padding:16px;
-    }
-    label{ display:block; font-size:13px; color:var(--muted); margin:10px 0 6px; }
-    input, textarea{
-      width:100%;
-      padding:12px 12px;
-      border-radius: 12px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.88);
-      font-family: var(--sans);
-      font-size:14px;
-      outline:none;
-    }
-    input:focus, textarea:focus{ border-color: rgba(17,17,17,.35); background:white; }
-    textarea{ min-height:120px; resize:vertical; }
-
-    .panel{
-      border:1px solid var(--line);
-      border-radius: var(--r);
-      background: rgba(255,255,255,.60);
-      padding:16px;
-      box-shadow: var(--shadow);
-    }
-    .panel h3{ font-family:var(--display); font-weight:600; margin:0 0 8px; font-size:16px; }
-    .panel p{ margin:0; color:var(--muted); font-size:14px; }
-
-    .details{
-      margin-top:12px; padding-top:12px; border-top:1px solid var(--line);
-      display:grid; gap:10px;
-      color:var(--muted); font-size:13px;
-    }
-    .detail{ display:flex; align-items:flex-start; gap:10px; }
-    .detail svg{ width:18px; height:18px; color:var(--accent); margin-top:1px; flex:0 0 auto; }
-
-    footer{ padding:28px 0 44px; color:var(--muted); font-size:13px; }
-    .foot{ display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; }
-    .foot a{ color:var(--muted); }
-    .foot a:hover{ color:var(--ink); }
-
-    .reveal{ opacity:0; transform: translateY(10px); transition: opacity .55s ease, transform .55s ease; }
-    .reveal.in{ opacity:1; transform:none; }
-
-    @media (max-width: 980px){
-      .hero-grid{ grid-template-columns: 1fr; }
-      .head{ grid-template-columns: 1fr; }
-      .cards{ grid-template-columns: 1fr; }
-      .steps{ grid-template-columns: 1fr 1fr; }
-      .workgrid{ grid-template-columns: 1fr; }
-      .contact{ grid-template-columns: 1fr; }
-    }
-  
-/* ===== LOGO (FINAL – stacked text) ===== */
-.brand{
-  display:flex;
-  flex-direction:column;
-  align-items:flex-start;
-  text-decoration:none;
-  line-height:1;
-}
-
-.logo-main{
-  font-family: "DM Serif Display", serif;
-  font-size: 34px;
-  font-weight: 400;
-  letter-spacing: 0;
-  color:#111;
-}
-
-.logo-sub{
-  margin-top:6px;
-  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  font-size:11px;
-  letter-spacing:0.35em;
-  text-transform:uppercase;
-  color:rgba(17,17,17,.65);
-}
-
-</style>
-  <link rel="stylesheet" href="styles.css">
-
-  <link rel="icon" href="favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-
-<style>
-/* Projects grid */
-.projects-wrap{padding:40px 0 80px;}
-.projects-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;}
-.projects-head h1{margin:0;font-size:34px;}
-.projects-head p{margin:6px 0 0;color:var(--muted);max-width:70ch;}
-.projects-grid{margin-top:18px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
-@media(max-width:980px){.projects-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
-@media(max-width:640px){.projects-grid{grid-template-columns:1fr;}}
-.pcard{position:relative;height:240px;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:rgba(255,255,255,.65);box-shadow:var(--shadow);text-decoration:none;}
-.pcard .media{position:absolute;inset:0;background:#eaeaea;background-size:cover;background-position:center;}
-.pcard .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.04),rgba(0,0,0,.58));}
-.pcard .meta{position:absolute;left:16px;right:16px;bottom:14px;display:flex;justify-content:space-between;align-items:flex-end;gap:14px;color:#fff;}
-.pcard .title{font-weight:650;font-size:16px;line-height:1.2;max-width:72%;}
-.pcard .cta{font-size:13px;opacity:.95;white-space:nowrap;}
-.pcard:hover .overlay{background:linear-gradient(180deg,rgba(0,0,0,.06),rgba(0,0,0,.64));}
-</style>
+  </style>
 </head>
 <body>
-<header>
-    <div class="container">
+
+  <header id="hdr">
+    <div class="wrap">
       <div class="nav">
-        <a class="brand" href="index.html" aria-label="ZöD Studio Home">
-  <span class="logo-main">ZöD</span>
-  <span class="logo-sub">STUDIO</span>
-</a>
-<!-- MOBILE MENU BUTTON -->
-  <button class="menu-toggle">Menu</button>
- <!-- NAVIGATION -->
-  <nav class="mobile-nav" aria-label="Primary navigation">
-          <ul>
-            <li><a href="#services" data-nav>Services</a></li>
-            <li><a href="#approach" data-nav>Approach</a></li>
-            <li><a href="#work" data-nav>Projects</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a class="pill" href="#contact">Contact</a></li>
-            <li><a class="pill" href="https://outlook.office.com/book/ZDStudio@zodstudio.com/" target="_blank" rel="noopener">Book a design conversation</a></li>
-          </ul>
-        </nav>
+        <a href="index.html" class="brand" aria-label="ZöD Studio Home">
+          <span class="brand-main">ZöD</span>
+          <span class="brand-sub">Studio</span>
+        </a>
+        <button class="menu-btn" id="menuBtn">Menu</button>
+        <ul class="nav-links" id="navLinks" role="list">
+          <li><a href="index.html#services">Services</a></li>
+          <li><a href="index.html#process">Approach</a></li>
+          <li><a href="projects.html" style="color:var(--accent)">Projects</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="index.html#contact" class="nav-cta">Contact</a></li>
+        </ul>
       </div>
     </div>
   </header>
-<main class="container projects-wrap">
-  <div class="projects-head">
-    <div>
-      <h1>All Projects</h1>
-      <p>All projects by ZöD Studio. Click any project to view more images and full details.</p>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="wrap">
+      <div class="header-row">
+        <div>
+          <p class="page-label reveal">Selected Work</p>
+          <h1 class="reveal reveal-delay-1">All <em>Projects.</em></h1>
+          <p class="page-lead reveal reveal-delay-2">Residential, commercial, and interior design — delivered digitally for homeowners and developers worldwide.</p>
+        </div>
+        <a class="btn btn-accent reveal reveal-delay-2" href="https://outlook.office.com/book/ZDStudio@zodstudio.com/" target="_blank" rel="noopener">Book a Consultation</a>
+      </div>
     </div>
-    <a class="btn secondary" href="index.html#work">← Back to home</a>
-    <a class="btn primary" href="https://outlook.office.com/book/ZDStudio@zodstudio.com/" target="_blank" rel="noopener">Book a design conversation</a>
   </div>
 
-  <section class="projects-grid" aria-label="All projects">
-<a class="pcard" href="project.html?id=p1" aria-label="Open Residential Concept Study">
-  <div class="media" style="background-image:url('work1.jpg')"></div>
-  <div class="overlay"></div>
-  <div class="meta"><div class="title">4 Bedroom Duplex</div><div class="cta">View project →</div></div>
-</a>
-<a class="pcard" href="project.html?id=p2" aria-label="Open Exterior Visualisation Package">
-  <div class="media" style="background-image:url('work2.jpg')"></div>
-  <div class="overlay"></div>
-  <div class="meta"><div class="title">3 Bedroom terrace apartment</div><div class="cta">View project →</div></div>
-</a>
-<a class="pcard" href="project.html?id=p3" aria-label="Open Housing Development Study">
-  <div class="media" style="background-image:url('work3.jpg')"></div>
-  <div class="overlay"></div>
-  <div class="meta"><div class="title">A mobile house</div><div class="cta">View project →</div></div>
-</a>
-<a class="pcard" href="project.html?id=p4" aria-label="Open Interior Visual Study">
-  <div class="media" style="background-image:url('work4.jpg')"></div>
-  <div class="overlay"></div>
-  <div class="meta"><div class="title">3 Bedroom Duplex</div><div class="cta">View project →</div></div>
-</a>
-<a class="pcard" href="project.html?id=p5" aria-label="Open Site Planning Study">
-  <div class="media" style="background-image:url('work5.jpg')"></div>
-  <div class="overlay"></div>
-  <div class="meta"><div class="title">Interior of a Bedroom</div><div class="cta">View project →</div></div>
-</a>
-<a class="pcard" href="project.html?id=p6" aria-label="Open Mixed-use Massing Study">
-  <div class="media" style="background-image:url('work6.jpg')"></div>
-  <div class="overlay"></div>
-  <div class="meta"><div class="title">4 Bedroom Duplex</div><div class="cta">View project →</div></div>
-</a>
-<a class="pcard" href="project.html?id=p7" aria-label="3 Bedroom Duplex">
-  <div class="media" style="background-image:url('work7.jpg')"></div>
-  <div class="overlay"></div>
-  <div class="meta"><div class="title">3 Bedroom Duplex</div><div class="cta">View project →</div></div>
-</a>
-  </section>
-</main>
-<script>
-const btn = document.querySelector(".menu-toggle");
-const nav = document.querySelector(".mobile-nav");
+  <!-- FILTERS -->
+  <div class="wrap">
+    <div class="filters">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="residential">Residential</button>
+      <button class="filter-btn" data-filter="visualisation">Visualisation</button>
+      <button class="filter-btn" data-filter="interior">Interior</button>
+      <button class="filter-btn" data-filter="concept">Concept</button>
+    </div>
+  </div>
 
-btn.addEventListener("click", function() {
-  nav.classList.toggle("active");
-});
-</script>
+  <!-- PROJECTS -->
+  <section class="projects-section">
+    <div class="wrap">
+      <div class="proj-grid" id="projGrid">
+
+        <a class="proj-card featured reveal" href="project.html?id=p2" data-tags="residential visualisation" aria-label="3 Bedroom Terrace Apartment">
+          <div class="proj-img" style="background-image:url('work2.jpg')"></div>
+          <div class="proj-overlay"></div>
+          <div class="proj-meta">
+            <div class="proj-tag">Residential · Visualisation</div>
+            <div class="proj-title">3 Bedroom Terrace Apartment</div>
+            <div class="proj-cta">View Project →</div>
+          </div>
+        </a>
+
+        <a class="proj-card reveal reveal-delay-1" href="project.html?id=p1" data-tags="residential concept" aria-label="4 Bedroom Duplex">
+          <div class="proj-img" style="background-image:url('work1.jpg')"></div>
+          <div class="proj-overlay"></div>
+          <div class="proj-meta">
+            <div class="proj-tag">Residential · Concept</div>
+            <div class="proj-title">4 Bedroom Duplex</div>
+            <div class="proj-cta">View Project →</div>
+          </div>
+        </a>
+
+        <a class="proj-card reveal reveal-delay-2" href="project.html?id=p3" data-tags="concept" aria-label="Mobile House">
+          <div class="proj-img" style="background-image:url('work3.jpg')"></div>
+          <div class="proj-overlay"></div>
+          <div class="proj-meta">
+            <div class="proj-tag">Innovation · Concept</div>
+            <div class="proj-title">Mobile House</div>
+            <div class="proj-cta">View Project →</div>
+          </div>
+        </a>
+
+        <a class="proj-card reveal reveal-delay-3" href="project.html?id=p4" data-tags="residential visualisation" aria-label="3 Bedroom Duplex">
+          <div class="proj-img" style="background-image:url('work4.jpg')"></div>
+          <div class="proj-overlay"></div>
+          <div class="proj-meta">
+            <div class="proj-tag">Residential · Exterior</div>
+            <div class="proj-title">3 Bedroom Duplex</div>
+            <div class="proj-cta">View Project →</div>
+          </div>
+        </a>
+
+        <a class="proj-card reveal reveal-delay-4" href="project.html?id=p5" data-tags="interior visualisation" aria-label="Bedroom Interior">
+          <div class="proj-img" style="background-image:url('work5.jpg')"></div>
+          <div class="proj-overlay"></div>
+          <div class="proj-meta">
+            <div class="proj-tag">Interior · Visualisation</div>
+            <div class="proj-title">Bedroom Interior</div>
+            <div class="proj-cta">View Project →</div>
+          </div>
+        </a>
+
+        <a class="proj-card reveal reveal-delay-5" href="project.html?id=p6" data-tags="residential visualisation" aria-label="4 Bedroom Duplex">
+          <div class="proj-img" style="background-image:url('work6.jpg')"></div>
+          <div class="proj-overlay"></div>
+          <div class="proj-meta">
+            <div class="proj-tag">Residential · Massing</div>
+            <div class="proj-title">4 Bedroom Duplex</div>
+            <div class="proj-cta">View Project →</div>
+          </div>
+        </a>
+
+        <a class="proj-card reveal reveal-delay-6" href="project.html?id=p7" data-tags="residential concept" aria-label="3 Bedroom Duplex">
+          <div class="proj-img" style="background-image:url('work7.jpg')"></div>
+          <div class="proj-overlay"></div>
+          <div class="proj-meta">
+            <div class="proj-tag">Residential · Concept</div>
+            <div class="proj-title">3 Bedroom Duplex</div>
+            <div class="proj-cta">View Project →</div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- BOTTOM CTA -->
+  <div class="wrap">
+    <div class="bottom-cta">
+      <p>Have a project in mind? Let's talk about what <em>you need.</em></p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <a class="btn btn-accent" href="index.html#contact">Get in Touch</a>
+        <a class="btn btn-outline" href="index.html">← Back Home</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot">
+        <div>
+          <div class="foot-brand">ZöD Studio</div>
+          <div class="foot-copy" style="margin-top:6px;">© <span id="y"></span> All rights reserved.</div>
+        </div>
+        <nav class="foot-links">
+          <a href="index.html#services">Services</a>
+          <a href="about.html">About</a>
+          <a href="projects.html">Projects</a>
+          <a href="index.html#contact">Contact</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+    const hdr = document.getElementById('hdr');
+    window.addEventListener('scroll', () => hdr.classList.toggle('scrolled', window.scrollY > 30), {passive:true});
+
+    // Reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); }), {threshold:.08});
+    reveals.forEach(el => io.observe(el));
+
+    // Mobile nav
+    const menuBtn = document.getElementById('menuBtn');
+    const navLinks = document.getElementById('navLinks');
+    menuBtn.addEventListener('click', () => { navLinks.classList.toggle('open'); menuBtn.textContent = navLinks.classList.contains('open') ? 'Close' : 'Menu'; });
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { navLinks.classList.remove('open'); menuBtn.textContent = 'Menu'; }));
+
+    // Filter
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.proj-card');
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        cards.forEach(card => {
+          const tags = card.dataset.tags || '';
+          const show = filter === 'all' || tags.includes(filter);
+          card.style.display = show ? 'block' : 'none';
+        });
+      });
+    });
+  </script>
 </body>
 </html>

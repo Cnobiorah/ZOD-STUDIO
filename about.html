@@ -1,315 +1,396 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>About — ZöD Studio</title>
-  <meta name="description" content="About ZöD Studio — a digital-first architectural practice built on clarity, balance, and thoughtful design." />
+  <meta name="description" content="About ZöD Studio — a digital-first architectural practice built on clarity, balance, and thoughtful design."/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#F7F7F5; --ink:#111111; --muted:rgba(17,17,17,.68);
-      --line:rgba(17,17,17,.12); --card:rgba(255,255,255,.72);
-      --shadow:0 18px 50px rgba(0,0,0,.07);
-      --accent:#6E7268;
-      --sans:"Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      --display:"Space Grotesk","Inter",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      --max: 1000px; --r: 14px;
+      --stone:#0D0C0A; --ash:#1A1917; --sand:#F0EDE7; --warm:#C8BFB0;
+      --muted:rgba(240,237,231,.45); --line:rgba(240,237,231,.12);
+      --accent:#C9A96E; --accent2:#8FA68C;
+      --serif:'Cormorant Garamond',Georgia,serif;
+      --mono:'DM Mono','Courier New',monospace;
+      --body:'Outfit',system-ui,sans-serif;
+      --max:1280px; --ease:cubic-bezier(.22,.68,0,1.2);
     }
-    *{ box-sizing:border-box; }
-    body{
-      margin:0;
-      background: radial-gradient(1200px 800px at 15% 10%, rgba(110,114,104,.10), transparent 60%),
-                  radial-gradient(900px 700px at 90% 20%, rgba(17,17,17,.05), transparent 55%),
-                  var(--bg);
-      color:var(--ink);
-      font-family:var(--sans);
-      line-height:1.6;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-    a{ color:inherit; text-decoration:none; }
-    a:hover{ text-decoration:underline; }
-    .container{ width:min(var(--max), calc(100% - 48px)); margin:0 auto; }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--stone);color:var(--sand);font-family:var(--body);font-weight:300;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+    a{color:inherit;text-decoration:none;}
+    img{display:block;max-width:100%;}
 
-    header{
-      position:sticky; top:0; z-index:20;
-      background: color-mix(in oklab, var(--bg) 78%, white 22%);
-      backdrop-filter: blur(12px);
+    body::before{
+      content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity:.028;mix-blend-mode:screen;
+    }
+
+    .wrap{width:min(var(--max),calc(100% - 48px));margin:0 auto;position:relative;z-index:1;}
+
+    /* HEADER */
+    header{position:fixed;top:0;left:0;right:0;z-index:100;transition:background .4s ease;}
+    header.scrolled{background:rgba(13,12,10,.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--line);}
+    .nav{display:flex;justify-content:space-between;align-items:center;padding:22px 0;transition:padding .4s ease;}
+    header.scrolled .nav{padding:14px 0;}
+    .brand{display:flex;flex-direction:column;line-height:1;user-select:none;}
+    .brand-main{font-family:var(--serif);font-weight:300;font-size:32px;letter-spacing:.12em;color:var(--sand);transition:font-size .4s ease;}
+    header.scrolled .brand-main{font-size:26px;}
+    .brand-sub{font-family:var(--mono);font-size:9px;letter-spacing:.42em;text-transform:uppercase;color:var(--accent);margin-top:4px;}
+    .nav-links{display:flex;align-items:center;gap:6px;list-style:none;}
+    .nav-links a{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--warm);padding:8px 14px;border-radius:999px;border:1px solid transparent;transition:all .22s ease;}
+    .nav-links a:hover{color:var(--sand);border-color:var(--line);background:rgba(240,237,231,.06);}
+    .nav-cta{border-color:var(--accent)!important;color:var(--accent)!important;}
+    .nav-cta:hover{background:var(--accent)!important;color:var(--stone)!important;}
+    .menu-btn{display:none;background:none;border:1px solid var(--line);color:var(--sand);font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;padding:8px 14px;border-radius:4px;cursor:pointer;}
+
+    /* PAGE HEADER */
+    .page-header{
+      padding:160px 0 80px;
       border-bottom:1px solid var(--line);
+      position:relative;overflow:hidden;
     }
-    .nav{ display:flex; justify-content:space-between; align-items:center; gap:18px; padding:14px 0; }
-    .brand{ display:flex; align-items:center; gap:12px; user-select:none; }
-    .mark{
-      width:34px; height:34px; border-radius:10px; border:1px solid var(--line);
-      background:linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.55));
-      box-shadow: 0 10px 24px rgba(0,0,0,.06);
-      display:grid; place-items:center; position:relative; overflow:hidden;
+    .page-header::before{
+      content:'ABOUT';
+      position:absolute;right:-20px;bottom:-40px;
+      font-family:var(--serif);font-size:240px;font-weight:300;line-height:1;
+      color:rgba(201,169,110,.04);user-select:none;pointer-events:none;
+      white-space:nowrap;
     }
-    .mark:before{
-      content:""; position:absolute; inset:-40%;
-      background: radial-gradient(circle at 30% 30%, rgba(110,114,104,.35), transparent 55%);
-      transform: rotate(20deg); opacity:.55;
+    .page-label{font-family:var(--mono);font-size:9px;letter-spacing:.4em;text-transform:uppercase;color:var(--accent);margin-bottom:20px;display:flex;align-items:center;gap:10px;}
+    .page-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--accent),transparent);max-width:80px;}
+    h1{font-family:var(--serif);font-weight:300;font-size:clamp(48px,6.5vw,88px);line-height:.96;letter-spacing:-.01em;max-width:18ch;}
+    h1 em{font-style:italic;color:var(--accent);}
+    .page-lead{color:var(--warm);font-size:16px;max-width:52ch;line-height:1.75;margin-top:28px;}
+
+    /* SECTIONS */
+    .section{padding:100px 0;}
+    .section-label{font-family:var(--mono);font-size:9px;letter-spacing:.4em;text-transform:uppercase;color:var(--accent);margin-bottom:20px;display:flex;align-items:center;gap:10px;}
+    .section-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--accent),transparent);max-width:80px;}
+    h2{font-family:var(--serif);font-weight:300;font-size:clamp(32px,4vw,56px);line-height:1.05;letter-spacing:-.01em;}
+    h2 em{font-style:italic;color:var(--accent);}
+
+    /* ABOUT GRID */
+    .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:60px;}
+    .about-card{background:var(--ash);padding:48px 40px;position:relative;overflow:hidden;}
+    .about-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--accent),transparent);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease);}
+    .about-card:hover::before{transform:scaleX(1);}
+    .about-card h3{font-family:var(--serif);font-weight:300;font-size:26px;color:var(--sand);margin-bottom:16px;}
+    .about-card p{color:var(--warm);font-size:14px;line-height:1.75;margin-bottom:16px;}
+    .about-card p:last-child{margin-bottom:0;}
+    .item-list{display:flex;flex-direction:column;gap:12px;margin-top:20px;}
+    .item-row{display:flex;gap:14px;align-items:flex-start;}
+    .item-dot{width:18px;height:18px;flex-shrink:0;margin-top:2px;color:var(--accent);}
+    .item-text{font-size:13px;color:var(--warm);line-height:1.55;}
+    .item-text b{color:var(--sand);font-weight:500;}
+
+    /* PRINCIPLES */
+    .principles-section{background:var(--ash);}
+    .principles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:60px;}
+    .principle{background:var(--stone);padding:40px 32px;position:relative;overflow:hidden;}
+    .principle-num{position:absolute;top:-16px;right:20px;font-family:var(--serif);font-size:140px;font-weight:300;color:rgba(201,169,110,.05);user-select:none;line-height:1;}
+    .principle-icon{width:36px;height:36px;border:1px solid var(--accent);border-radius:50%;display:grid;place-items:center;margin-bottom:24px;}
+    .principle-icon svg{width:16px;height:16px;color:var(--accent);}
+    .principle h4{font-family:var(--serif);font-weight:300;font-size:24px;color:var(--sand);margin-bottom:12px;}
+    .principle p{font-size:13px;color:var(--warm);line-height:1.7;}
+
+    /* SUSTAINABILITY */
+    .sustain-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:80px;align-items:center;margin-top:60px;}
+    .sustain-text p{color:var(--warm);font-size:15px;line-height:1.8;margin-bottom:20px;}
+    .sustain-text p:last-child{margin-bottom:0;}
+    .sustain-pillars{display:flex;flex-direction:column;gap:1px;background:var(--line);border:1px solid var(--line);}
+    .pillar{background:var(--ash);padding:20px 24px;display:flex;gap:16px;align-items:center;transition:background .25s ease;}
+    .pillar:hover{background:#1F1E1C;}
+    .pillar-icon{width:32px;height:32px;flex-shrink:0;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;}
+    .pillar-icon svg{width:14px;height:14px;color:var(--accent2);}
+    .pillar-label{font-family:var(--serif);font-size:17px;font-weight:300;color:var(--sand);}
+    .pillar-desc{font-size:12px;color:var(--warm);margin-top:3px;line-height:1.4;}
+
+    /* CTA BAND */
+    .cta-band{padding:100px 0;text-align:center;border-top:1px solid var(--line);}
+    .cta-band h2{margin-bottom:12px;}
+    .cta-band p{color:var(--warm);margin-bottom:36px;font-size:16px;}
+    .cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+
+    /* BUTTONS */
+    .btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;padding:14px 26px;border-radius:2px;cursor:pointer;transition:all .22s ease;white-space:nowrap;}
+    .btn-outline{border:1px solid rgba(240,237,231,.35);color:var(--sand);background:transparent;}
+    .btn-outline:hover{border-color:var(--sand);background:rgba(240,237,231,.08);}
+    .btn-accent{background:var(--accent);color:var(--stone);border:1px solid var(--accent);font-weight:500;}
+    .btn-accent:hover{background:transparent;color:var(--accent);}
+
+    /* FOOTER */
+    footer{padding:40px 0;border-top:1px solid var(--line);}
+    .foot{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;}
+    .foot-brand{font-family:var(--serif);font-size:18px;font-weight:300;color:var(--warm);}
+    .foot-copy{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);}
+    .foot-links{display:flex;gap:24px;}
+    .foot-links a{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--warm);transition:color .2s;}
+    .foot-links a:hover{color:var(--accent);}
+
+    /* REVEAL */
+    .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease;}
+    .reveal.in{opacity:1;transform:none;}
+    .reveal-delay-1{transition-delay:.1s;}
+    .reveal-delay-2{transition-delay:.2s;}
+    .reveal-delay-3{transition-delay:.3s;}
+
+    /* MOBILE NAV */
+    @media(max-width:768px){
+      .nav-links{display:none;}
+      .menu-btn{display:block;}
+      .nav-links.open{display:flex;flex-direction:column;position:fixed;inset:0;z-index:200;background:var(--stone);justify-content:center;align-items:center;gap:20px;padding:40px;}
+      .nav-links.open a{font-size:14px;letter-spacing:.2em;padding:14px 24px;}
     }
-    .mark span{ position:relative; font-family:var(--display); font-weight:600; letter-spacing:-.04em; font-size:16px; }
-    .brandtext{ line-height:1.05; }
-    .wordmark{ font-family:var(--display); font-weight:600; font-size:16px; letter-spacing:-.02em; }
-    .submark{ font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted); margin-top:2px; }
 
-    nav a{ display:inline-flex; align-items:center; gap:8px; padding:9px 11px; border-radius:999px; font-size:14px; color:var(--muted); border:1px solid transparent; }
-    nav a:hover{ text-decoration:none; color:var(--ink); background: rgba(255,255,255,.65); border-color: var(--line); }
-    .pill{ border:1px solid var(--line); background: rgba(17,17,17,.92); color: var(--bg); box-shadow: 0 10px 26px rgba(0,0,0,.18); font-weight:600; }
-    .pill:hover{ background: rgba(17,17,17,.86); text-decoration:none; }
-
-    .hero{ padding:60px 0 28px; }
-    .kicker{ margin:0 0 10px; color:var(--muted); letter-spacing:.14em; text-transform:uppercase; font-size:12px; }
-    h1{ font-family:var(--display); font-weight:600; font-size: clamp(34px, 4.2vw, 50px); line-height:1.08; margin:0 0 12px; letter-spacing:-.03em; }
-    .lead{ margin:0; color:var(--muted); font-size:16px; max-width:72ch; }
-
-    .grid{ display:grid; grid-template-columns: 1fr 1fr; gap:14px; margin-top:22px; }
-    .card{ border:1px solid var(--line); border-radius: var(--r); background: var(--card); box-shadow: var(--shadow); padding:16px; }
-    h2{ font-family:var(--display); font-weight:600; font-size:18px; margin:0 0 10px; letter-spacing:-.02em; }
-    p{ margin:0 0 12px; color:var(--muted); }
-    p:last-child{ margin-bottom:0; }
-
-    .list{ display:grid; gap:10px; margin-top:10px; }
-    .item{ display:flex; gap:10px; align-items:flex-start; color:var(--muted); font-size:14px; }
-    .item svg{ width:18px; height:18px; color:var(--accent); margin-top:1px; flex:0 0 auto; }
-
-    footer{ padding:28px 0 44px; color:var(--muted); font-size:13px; border-top:1px solid var(--line); margin-top:28px; }
-    .foot{ display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; }
-
-    @media (max-width: 900px){ .grid{ grid-template-columns: 1fr; } }
-  /* =========================
-   ZÖD STUDIO HEADER LOGO
-   Neutral + modern header lockup (stacked)
-   ========================= */
-.brand{
-  display:flex;
-  align-items:center;
-  text-decoration:none;
-  user-select:none;
-}
-.brandstack{
-  display:flex;
-  flex-direction:column;
-  align-items:flex-start;
-  line-height:1;
-}
-
-/* Base sizes */
-.logo-main{
-  font-family: "DM Serif Display", serif;
-  font-weight: 400;
-  letter-spacing: 0.04em;
-  line-height: 1;
-  color: var(--ink);
-  font-size: 36px;
-}
-.logo-sub{
-  margin-top: 6px;
-  font-family: "Inter", system-ui, sans-serif;
-  font-size: 12px;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-/* Homepage: slightly larger */
-body.home .logo-main{ font-size: 42px; }
-body.home .logo-sub{ font-size: 12px; }
-
-/* Smooth shrink on scroll */
-header{ transition: background .25s ease, border-color .25s ease; }
-.nav{ transition: padding .25s ease, gap .25s ease; gap: 24px; }
-header.scrolled .nav{ padding: 12px 0 !important; }
-header.scrolled .logo-main{ font-size: 30px; }
-body.home header.scrolled .logo-main{ font-size: 32px; }
-header.scrolled .logo-sub{ font-size: 11px; letter-spacing: 0.28em; margin-top: 5px; }
-
-/* Nav spacing polish */
-nav ul{ gap: 10px !important; }
-nav a{ padding: 8px 12px; }
-
-/* Mobile */
-@media (max-width: 768px){
-  body.home .logo-main{ font-size: 36px; }
-  .logo-main{ font-size: 32px; }
-  .logo-sub{ font-size: 11px; letter-spacing: 0.28em; }
-  header.scrolled .logo-main{ font-size: 28px; }
-  body.home header.scrolled .logo-main{ font-size: 30px; }
-}
-
-
-
-/* ===== Logo alignment (match index header baseline) ===== */
-.brand{ display:flex; align-items:center; gap:0; }
-.brandstack{
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:flex-start;
-  line-height:1;
-}
-/* Micro nudge for perfect visual alignment (serif baseline) */
-.brandstack{ transform: translateY(1px); }
-</style>
-  <link rel="stylesheet" href="styles.css">
-
-  <link rel="icon" href="favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    @media(max-width:900px){
+      .about-grid{grid-template-columns:1fr;}
+      .principles-grid{grid-template-columns:1fr;}
+      .sustain-grid{grid-template-columns:1fr;}
+    }
+  </style>
 </head>
-<body class="inner">
-  <header>
-    <div class="container">
-      <div class="nav">
-        <a class="brand" href="index.html" aria-label="ZöD Studio Home">
-  <span class="brandstack"><span class="logo-main">ZöD</span>
-  <span class="logo-sub">STUDIO</span></span>
-</a>
-<!-- MOBILE MENU BUTTON -->
-  <button class="menu-toggle">Menu</button>
- <!-- NAVIGATION -->
-  <nav class="mobile-nav" aria-label="Primary navigation">
+<body>
 
-          <a href="index.html#services">Services</a>
-          <a href="projects.html">Projects</a>
-          <a class="pill" href="index.html#contact">Contact</a>
-          <a class="pill" href="https://outlook.office.com/book/ZDStudio@zodstudio.com/" target="_blank" rel="noopener">Book a design conversation</a>
-        </nav>
+  <header id="hdr">
+    <div class="wrap">
+      <div class="nav">
+        <a href="index.html" class="brand" aria-label="ZöD Studio Home">
+          <span class="brand-main">ZöD</span>
+          <span class="brand-sub">Studio</span>
+        </a>
+        <button class="menu-btn" id="menuBtn">Menu</button>
+        <ul class="nav-links" id="navLinks" role="list">
+          <li><a href="index.html#services">Services</a></li>
+          <li><a href="index.html#process">Approach</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="about.html" style="color:var(--accent)">About</a></li>
+          <li><a href="index.html#contact" class="nav-cta">Contact</a></li>
+        </ul>
       </div>
     </div>
   </header>
 
-  <main class="container">
-    <section class="hero">
-      <p class="kicker">About</p>
-      <h1>Calm design thinking, delivered through modern digital workflows.</h1>
-      <p class="lead">
-        ZöD Studio is a digital-first architectural practice focused on modern, efficient building design for homeowners and developers.
-        Built on clarity and balance, we prioritise decisions that are practical, buildable, and easy to communicate.
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="wrap">
+      <p class="page-label reveal">About</p>
+      <h1 class="reveal reveal-delay-1">Calm design<br>thinking, <em>delivered.</em></h1>
+      <p class="page-lead reveal reveal-delay-2">
+        ZöD Studio is a digital-first architectural practice focused on modern, efficient building design for homeowners and developers. Built on clarity and balance, we prioritise decisions that are practical, buildable, and easy to communicate.
       </p>
+    </div>
+  </div>
 
-      <div class="grid">
-        <article class="card">
-          <h2>What we do</h2>
-          <p>
-            We support projects from early concept through design development, using structured digital workflows to keep decisions clear,
-            documentation consistent, and presentations compelling.
-          </p>
-          <div class="list">
-            <div class="item">
-              <svg viewBox="0 0 24 24" fill="none"><path d="M4 20V8l8-4 8 4v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <div><b>Concept & spatial design</b> — layout clarity, circulation, massing studies.</div>
+  <!-- WHAT WE DO + HOW WE THINK -->
+  <section class="section">
+    <div class="wrap">
+      <p class="section-label reveal">Studio</p>
+      <h2 class="reveal reveal-delay-1">The practice,<br><em>defined.</em></h2>
+
+      <div class="about-grid">
+        <article class="about-card reveal">
+          <h3>What we do</h3>
+          <p>We support projects from early concept through design development, using structured digital workflows to keep decisions clear, documentation consistent, and presentations compelling.</p>
+          <div class="item-list">
+            <div class="item-row">
+              <svg class="item-dot" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 20V8l8-4 8 4v12"/></svg>
+              <div class="item-text"><b>Concept & spatial design</b> — layout clarity, circulation, massing studies.</div>
             </div>
-            <div class="item">
-              <svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16v10H4z" stroke="currentColor" stroke-width="2"/><path d="M8 11h8M8 14h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <div><b>Digital visualisation</b> — renders and presentation packs for decision-making.</div>
+            <div class="item-row">
+              <svg class="item-dot" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h16v10H4z"/><path d="M8 11h8M8 14h6"/></svg>
+              <div class="item-text"><b>Digital visualisation</b> — renders and presentation packs for decision-making.</div>
             </div>
-            <div class="item">
-              <svg viewBox="0 0 24 24" fill="none"><path d="M6 3h12v18H6z" stroke="currentColor" stroke-width="2"/><path d="M9 7h6M9 11h6M9 15h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <div><b>Design development</b> — refinement and coordination toward next-stage delivery.</div>
+            <div class="item-row">
+              <svg class="item-dot" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3h12v18H6z"/><path d="M9 7h6M9 11h6M9 15h4"/></svg>
+              <div class="item-text"><b>Design development</b> — refinement and coordination toward next-stage delivery.</div>
             </div>
           </div>
         </article>
 
-        <article class="card">
-          <h2>How we think</h2>
-          <p>
-            ZöD is built on partnership and balance — values that translate into the way we design: calm, considered, and precise.
-          </p>
-          <div class="list">
-            <div class="item">
-              <svg viewBox="0 0 24 24" fill="none"><path d="M6 4h12v16H6z" stroke="currentColor" stroke-width="2"/><path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <div><b>Clarity</b> — simple briefs, clean stages, decisions documented.</div>
+        <article class="about-card reveal reveal-delay-1">
+          <h3>How we think</h3>
+          <p>ZöD is built on partnership and balance — values that translate directly into the way we design: calm, considered, and precise.</p>
+          <div class="item-list">
+            <div class="item-row">
+              <svg class="item-dot" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 4h12v16H6z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+              <div class="item-text"><b>Clarity</b> — simple briefs, clean stages, decisions documented.</div>
             </div>
-            <div class="item">
-              <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v18M3 12h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <div><b>Balance</b> — design quality aligned with buildability and budget.</div>
+            <div class="item-row">
+              <svg class="item-dot" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v18M3 12h18"/></svg>
+              <div class="item-text"><b>Balance</b> — design quality aligned with buildability and budget.</div>
             </div>
-            <div class="item">
-              <svg viewBox="0 0 24 24" fill="none"><path d="M7 17l10-10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M7 7h10v10H7z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-              <div><b>Digital-first delivery</b> — efficient collaboration and consistent outputs.</div>
+            <div class="item-row">
+              <svg class="item-dot" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17l10-10"/><path d="M7 7h10v10H7z"/></svg>
+              <div class="item-text"><b>Digital-first delivery</b> — efficient collaboration and consistent outputs.</div>
             </div>
           </div>
         </article>
 
-        <article class="card">
-          <h2>On sustainability (honest position)</h2>
-          <p>
-            ZöD Studio is intentionally evolving toward climate-responsive and sustainability-informed design.
-            We apply principles progressively through continuous learning and practical application.
-          </p>
-          <div class="list">
-            <div class="item">
-              <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s7-5.3 7-12a7 7 0 1 0-14 0c0 6.7 7 12 7 12z" stroke="currentColor" stroke-width="2"/></svg>
-              <div><b>Climate-responsive basics</b> — orientation, ventilation logic, shading awareness.</div>
+        <article class="about-card reveal reveal-delay-2">
+          <h3>Who we work with</h3>
+          <p>We keep projects simple: clear scope, clean communication, and structured delivery from brief to final package.</p>
+          <div class="item-list">
+            <div class="item-row">
+              <svg class="item-dot" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              <div class="item-text"><b>Homeowners</b> — new builds, renovations, extensions.</div>
             </div>
-            <div class="item">
-              <svg viewBox="0 0 24 24" fill="none"><path d="M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 4v16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <div><b>Evidence-led growth</b> — document what works and improve with each project.</div>
+            <div class="item-row">
+              <svg class="item-dot" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+              <div class="item-text"><b>Developers</b> — feasibility, massing, marketing visuals.</div>
+            </div>
+            <div class="item-row">
+              <svg class="item-dot" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l7 7-7 13L5 9l7-7z"/></svg>
+              <div class="item-text"><b>Delivery</b> — remote / hybrid, worldwide.</div>
             </div>
           </div>
         </article>
 
-        <article class="card">
-          <h2>Work with us</h2>
-          <p>We keep projects simple: clear scope, clean communication, and structured delivery.</p>
-          <div class="list">
-            <div class="item">
-              <svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16v12H4z" stroke="currentColor" stroke-width="2"/><path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="2"/></svg>
-              <div><b>Email</b> — hello@zodstudio.com</div>
-            </div>
-            <div class="item">
-              <svg viewBox="0 0 24 24" fill="none"><path d="M7 2h10a2 2 0 0 1 2 2v18l-7-3-7 3V4a2 2 0 0 1 2-2z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-              <div><b>Book</b> — <a href="https://outlook.office.com/book/ZDStudio@zodstudio.com/" target="_blank" rel="noopener">Book a design conversation</a></div>
-            </div>
-
-            <div class="item">
-              <svg viewBox="0 0 24 24" fill="none"><path d="M3 11h18v10H3z" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <div><b>Focus</b> — homeowners & developers</div>
-            </div>
-            <div class="item">
-              <svg viewBox="0 0 24 24" fill="none"><path d="M12 2l7 7-7 13L5 9l7-7z" stroke="currentColor" stroke-width="2"/></svg>
-              <div><b>Delivery</b> — remote / hybrid</div>
-            </div>
-          </div>
+        <article class="about-card reveal reveal-delay-3" style="background:linear-gradient(135deg,#1A1917,#0D0C0A);display:flex;flex-direction:column;justify-content:flex-end;">
+          <p style="font-family:var(--serif);font-size:30px;font-weight:300;color:var(--warm);line-height:1.25;margin-bottom:28px;">
+            "We prioritise decisions that are practical, buildable, and easy to communicate."
+          </p>
+          <a class="btn btn-accent" href="index.html#contact" style="align-self:flex-start;">Start a Project</a>
         </article>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <footer>
-      <div class="foot">
-        <div>© <span id="y"></span> ZöD Studio. All rights reserved.</div>
-        <div style="display:flex; gap:14px; flex-wrap:wrap;">
-          <a href="index.html">Home</a>
-          <a href="index.html#contact">Contact</a>
+  <!-- PRINCIPLES -->
+  <section class="section principles-section">
+    <div class="wrap">
+      <p class="section-label reveal">Principles</p>
+      <h2 class="reveal reveal-delay-1">What drives<br>every <em>decision.</em></h2>
+
+      <div class="principles-grid">
+        <div class="principle reveal">
+          <div class="principle-num">01</div>
+          <div class="principle-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 4h12v16H6z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+          </div>
+          <h4>Clarity</h4>
+          <p>Every project starts with a clear, documented brief. Scope, deliverables, timeline, and constraints — agreed upfront so no effort is wasted.</p>
+        </div>
+        <div class="principle reveal reveal-delay-1">
+          <div class="principle-num">02</div>
+          <div class="principle-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v18M3 12h18"/></svg>
+          </div>
+          <h4>Balance</h4>
+          <p>Design quality aligned with what's actually buildable and affordable. Beauty without pragmatism isn't architecture — it's wallpaper.</p>
+        </div>
+        <div class="principle reveal reveal-delay-2">
+          <div class="principle-num">03</div>
+          <div class="principle-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 17l7-7 4 4 6-8"/></svg>
+          </div>
+          <h4>Precision</h4>
+          <p>Every drawing, model, and render is produced to a consistent, professional standard. Digital-first delivery keeps outputs clean and replicable.</p>
         </div>
       </div>
-    </footer>
-  </main>
+    </div>
+  </section>
+
+  <!-- SUSTAINABILITY -->
+  <section class="section">
+    <div class="wrap">
+      <p class="section-label reveal">Sustainability</p>
+      <h2 class="reveal reveal-delay-1">An <em>honest</em><br>position.</h2>
+
+      <div class="sustain-grid">
+        <div class="sustain-text reveal reveal-delay-1">
+          <p>ZöD Studio is intentionally evolving toward climate-responsive and sustainability-informed design. We apply principles progressively through continuous learning and practical application — not as a marketing claim, but as a genuine design commitment.</p>
+          <p>We don't pretend to be specialists in areas we're still developing. What we commit to is honest, evidence-led improvement with every project we take on.</p>
+        </div>
+
+        <div class="sustain-pillars reveal reveal-delay-2">
+          <div class="pillar">
+            <div class="pillar-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3a9 9 0 0 1 9 9c0 4.97-4.03 9-9 9S3 16.97 3 12c0-2.12.73-4.07 1.95-5.61"/><path d="M12 7v5l3 3"/></svg>
+            </div>
+            <div>
+              <div class="pillar-label">Orientation & Ventilation</div>
+              <div class="pillar-desc">Passive design strategies applied from concept stage.</div>
+            </div>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            </div>
+            <div>
+              <div class="pillar-label">Shading & Daylighting</div>
+              <div class="pillar-desc">Considered in every massing and façade study.</div>
+            </div>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l7 7-7 13L5 9l7-7z"/></svg>
+            </div>
+            <div>
+              <div class="pillar-label">Evidence-Led Growth</div>
+              <div class="pillar-desc">Document what works, improve with each project.</div>
+            </div>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+            </div>
+            <div>
+              <div class="pillar-label">Material Awareness</div>
+              <div class="pillar-desc">Specifying with embodied carbon in mind where possible.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BAND -->
+  <div class="cta-band">
+    <div class="wrap">
+      <p class="section-label" style="justify-content:center;">Work Together</p>
+      <h2>Ready to start<br><em>your project?</em></h2>
+      <p>Share the basics and we'll respond with a clear next step.</p>
+      <div class="cta-actions">
+        <a class="btn btn-accent" href="index.html#contact">Get in Touch</a>
+        <a class="btn btn-outline" href="https://outlook.office.com/book/ZDStudio@zodstudio.com/" target="_blank" rel="noopener">Book a Consultation</a>
+        <a class="btn btn-outline" href="projects.html">View Projects</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot">
+        <div>
+          <div class="foot-brand">ZöD Studio</div>
+          <div class="foot-copy" style="margin-top:6px;">© <span id="y"></span> All rights reserved.</div>
+        </div>
+        <nav class="foot-links">
+          <a href="index.html#services">Services</a>
+          <a href="about.html">About</a>
+          <a href="projects.html">Projects</a>
+          <a href="index.html#contact">Contact</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
 
   <script>
-    document.getElementById("y").textContent = new Date().getFullYear();
+    document.getElementById('y').textContent = new Date().getFullYear();
+    const hdr = document.getElementById('hdr');
+    window.addEventListener('scroll', () => hdr.classList.toggle('scrolled', window.scrollY > 30), {passive:true});
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); }), {threshold:.1});
+    reveals.forEach(el => io.observe(el));
+    const menuBtn = document.getElementById('menuBtn');
+    const navLinks = document.getElementById('navLinks');
+    menuBtn.addEventListener('click', () => { navLinks.classList.toggle('open'); menuBtn.textContent = navLinks.classList.contains('open') ? 'Close' : 'Menu'; });
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { navLinks.classList.remove('open'); menuBtn.textContent = 'Menu'; }));
   </script>
-<script>
-  // Premium header shrink-on-scroll
-  (function(){
-    const header = document.querySelector('header');
-    if(!header) return;
-
-    const onScroll = () => {
-      if (window.scrollY > 8) header.classList.add('scrolled');
-      else header.classList.remove('scrolled');
-    };
-
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-  })();
-</script>
 </body>
 </html>
