@@ -249,10 +249,11 @@
     margin:0 0 20px; flex:1;
   }
   .card-foot{
-    display:flex; align-items:center; justify-content:space-between;
+    display:flex; flex-direction:column; gap:12px;
     border-top:1px solid var(--stone-3);
     padding-top:16px;
   }
+  .buy-row{display:flex; gap:18px; flex-wrap:wrap;}
   .price{
     font-family:'IBM Plex Mono', monospace;
     font-size:.82rem;
@@ -409,9 +410,11 @@
           <h3>Residential Ergonomics</h3>
           <p class="desc">A visual reference for architects &amp; interior designers: standing and seated body dimensions, circulation and clearances, and full room-by-room layouts across 12 chapters, 49 diagrams, and 44 data tables.</p>
           <div class="card-foot">
-            <div class="price mono">₦5,000 <span class="sub">/ $10 USD</span></div>
-            <!-- Replace # with your live Selar checkout URL once the product is published -->
-            <a href="https://selar.com/474p727878" class="buy" target="_blank" rel="noopener">Buy on Selar →</a>
+            <div class="price mono">₦12,000 <span class="sub">/ $12 USD</span></div>
+            <div class="buy-row">
+              <a href="https://selar.com/474p727878" class="buy" target="_blank" rel="noopener">Buy on Selar →</a>
+              <a href="https://4795223269181.gumroad.com/l/tfegks" class="buy" target="_blank" rel="noopener">Buy on Gumroad →</a>
+            </div>
           </div>
         </div>
       </div>
