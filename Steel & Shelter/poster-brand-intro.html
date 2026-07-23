@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ZoD Outdoor Structures — Brand Poster</title>
+
+<!--
+  HOW TO EDIT THIS FILE
+  ----------------------
+  1. Open this file in any text editor (VS Code, Notepad, etc.)
+  2. Search for the word EDIT. Each spot marked with it has an instruction
+     right above the text (or image) you should change.
+  3. Save, then reopen in a browser to see the update.
+  4. To add a real photo: put an image file in an "images" folder next to
+     this HTML file, named poster-photo.jpg, then reopen the file in your
+     browser. It fills the photo panel automatically. Recommended size is
+     roughly 900 by 1300px (portrait), so it fills the panel without
+     stretching.
+  5. If no photo is added yet, the panel shows a placeholder automatically —
+     nothing breaks, nothing looks broken, it just shows a placeholder icon.
+  6. To turn this into a postable image: open in Chrome, press Ctrl/Cmd+Shift+I
+     (DevTools), then Ctrl/Cmd+Shift+P, then type screenshot, then choose
+     Capture node screenshot with the poster element selected. Or use any
+     screen-capture tool at 100% zoom.
+
+  The canvas below is a fixed 1080 by 1080px square, the standard Instagram
+  and Facebook post size. To make a Story version instead, find the .poster
+  style rule below and change both width and height to 1920px, then adjust
+  the vertical spacing to taste.
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:#EDEAE2;
+    --panel:#E2DDD0;
+    --ink:#201E1A;
+    --steel:#55524A;
+    --steel-2:#8A8577;
+    --rust:#B5502D;
+    --rust-dark:#8F3F20;
+    --line:#C9C2B2;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:#3a3833;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40px;
+    font-family:'IBM Plex Sans',sans-serif;
+  }
+  .poster{
+    width:1080px;
+    height:1080px;
+    background:var(--paper);
+    position:relative;
+    overflow:hidden;
+    color:var(--ink);
+    box-shadow:0 30px 80px rgba(0,0,0,0.4);
+    display:flex;
+    flex-direction:column;
+  }
+
+  /* register marks, corners */
+  .regmark::before,.regmark::after{
+    content:'';position:absolute;width:26px;height:26px;
+    border-top:2px solid var(--rust);border-left:2px solid var(--rust);opacity:.7;
+    pointer-events:none;
+  }
+  .regmark::before{top:44px;left:44px;}
+  .regmark::after{bottom:44px;right:44px;border-top:none;border-left:none;border-bottom:2px solid var(--rust);border-right:2px solid var(--rust);}
+
+  /* header */
+  .header{
+    display:flex;align-items:baseline;justify-content:space-between;
+    padding:56px 56px 0;
+  }
+  .logo-mark{
+    font-family:'Big Shoulders Display',sans-serif;font-weight:800;
+    font-size:40px;letter-spacing:0.02em;line-height:1;
+  }
+  .logo-mark span{color:var(--rust);}
+  .logo-sub{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.2em;
+    text-transform:uppercase;color:var(--steel);margin-top:6px;
+  }
+  .code-chip{
+    font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:0.08em;
+    border:1.5px solid var(--rust);color:var(--rust-dark);padding:6px 14px;
+  }
+
+  /* main two-column area */
+  .main{
+    flex:1;
+    display:flex;
+    align-items:center;
+    gap:44px;
+    padding:36px 56px 0;
+    min-height:0;
+  }
+  .textcol{flex:1;min-width:0;}
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;font-size:14px;letter-spacing:0.16em;
+    text-transform:uppercase;color:var(--rust-dark);display:flex;align-items:center;gap:12px;
+    margin-bottom:18px;
+  }
+  .eyebrow::before{content:'';width:30px;height:2px;background:var(--rust);}
+  .headline{
+    font-family:'Big Shoulders Display',sans-serif;font-weight:700;
+    text-transform:uppercase;font-size:62px;line-height:1.0;letter-spacing:0.005em;
+  }
+  .subtext{
+    font-size:18px;color:var(--steel);margin-top:22px;line-height:1.6;max-width:480px;
+  }
+
+  /* photo panel */
+  .photocol{width:340px;flex-shrink:0;}
+  .photo-well{
+    position:relative;width:100%;height:560px;
+    border:1px solid var(--line);background:var(--panel);overflow:hidden;
+  }
+  .photo-well .placeholder{
+    position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+    justify-content:center;gap:16px;color:var(--steel);text-align:center;padding:28px;
+    background:repeating-linear-gradient(135deg, var(--panel), var(--panel) 12px, #D9D3C3 12px, #D9D3C3 13px);
+  }
+  .photo-well .placeholder svg{width:52px;height:52px;color:var(--steel-2);}
+  .photo-well .placeholder .ptitle{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.08em;
+    text-transform:uppercase;color:var(--steel);
+  }
+  .photo-well .placeholder .pspec{font-size:11.5px;color:var(--steel-2);max-width:220px;}
+  .photo-well img{
+    position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  }
+  .photo-caption{
+    margin-top:14px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.05em;
+    color:var(--steel);text-transform:uppercase;display:flex;justify-content:space-between;
+  }
+
+  /* category icon row */
+  .catrow{
+    display:flex;border:1px solid var(--line);
+    margin:36px 56px 0;
+  }
+  .catcell{
+    flex:1;background:var(--panel);border-right:1px solid var(--line);
+    padding:20px 14px;text-align:center;
+  }
+  .catcell:last-child{border-right:none;}
+  .catcell svg{width:52px;height:auto;color:var(--ink);margin:0 auto 12px;}
+  .catcell .label{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.04em;
+    text-transform:uppercase;color:var(--steel);
+  }
+
+  /* bottom CTA bar */
+  .ctabar{
+    background:var(--rust);color:var(--paper);
+    padding:32px 56px;margin-top:36px;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .cta-text{
+    font-family:'Big Shoulders Display',sans-serif;font-weight:700;
+    text-transform:uppercase;font-size:32px;letter-spacing:0.01em;
+  }
+  .cta-contact{
+    font-family:'IBM Plex Mono',monospace;font-size:14px;letter-spacing:0.03em;
+    text-align:right;line-height:1.7;
+  }
+</style>
+</head>
+<body>
+
+<div class="poster regmark">
+
+  <div class="header">
+    <div>
+      <div class="logo-mark">Z<span>&ouml;</span>D</div>
+      <div class="logo-sub">Outdoor Structures</div>
+    </div>
+    <!-- EDIT: change or remove this floating chip -->
+    <div class="code-chip">DESIGN &middot; FABRICATE &middot; INSTALL</div>
+  </div>
+
+  <div class="main">
+    <div class="textcol">
+      <div class="eyebrow">Custom outdoor structures</div>
+
+      <!-- EDIT: main headline -->
+      <div class="headline">Steel and<br>shade, built<br>for your site.</div>
+
+      <!-- EDIT: supporting line -->
+      <p class="subtext">We design, fabricate, and install carports, pergolas, canopies, and gates &mdash; every structure sized and detailed to fit your space.</p>
+    </div>
+
+    <div class="photocol">
+      <div class="photo-well">
+        <div class="placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="1"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16 L15 10 L11 14 L8 11 L3 16"/></svg>
+          <div class="ptitle">Add a project photo</div>
+          <div class="pspec">Place a file at images/poster-photo.jpg &mdash; about 900&times;1300px, portrait</div>
+        </div>
+        <!-- EDIT: this is the real photo slot. Add images/poster-photo.jpg next to this file and it appears here automatically. -->
+        <img src="images/poster-photo.jpg" alt="Featured ZoD project" onerror="this.style.display='none'">
+      </div>
+      <!-- EDIT: caption under the photo, or remove this line entirely -->
+      <div class="photo-caption"><span>Featured project</span><span>CP-002</span></div>
+    </div>
+  </div>
+
+  <div class="catrow">
+    <div class="catcell">
+      <svg viewBox="0 0 120 70" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="14" y1="58" x2="14" y2="30"/><line x1="106" y1="58" x2="106" y2="30"/><line x1="8" y1="30" x2="112" y2="30"/><line x1="4" y1="58" x2="116" y2="58"/></svg>
+      <div class="label">Carports</div>
+    </div>
+    <div class="catcell">
+      <svg viewBox="0 0 120 70" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="14" y1="58" x2="14" y2="26"/><line x1="106" y1="58" x2="106" y2="26"/><line x1="14" y1="30" x2="106" y2="30"/><line x1="26" y1="26" x2="26" y2="34"/><line x1="44" y1="26" x2="44" y2="34"/><line x1="62" y1="26" x2="62" y2="34"/><line x1="80" y1="26" x2="80" y2="34"/><line x1="98" y1="26" x2="98" y2="34"/></svg>
+      <div class="label">Pergolas</div>
+    </div>
+    <div class="catcell">
+      <svg viewBox="0 0 120 70" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="30" y1="58" x2="30" y2="30"/><line x1="90" y1="58" x2="90" y2="30"/><path d="M22 30 Q60 14 98 30"/><rect x="52" y="40" width="16" height="18"/></svg>
+      <div class="label">Canopies</div>
+    </div>
+    <div class="catcell">
+      <svg viewBox="0 0 120 70" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="58" x2="12" y2="18"/><line x1="108" y1="58" x2="108" y2="18"/><line x1="22" y1="30" x2="22" y2="58"/><line x1="34" y1="30" x2="34" y2="58"/><line x1="46" y1="30" x2="46" y2="58"/><line x1="58" y1="30" x2="58" y2="58"/><line x1="70" y1="30" x2="70" y2="58"/><line x1="82" y1="30" x2="82" y2="58"/><line x1="94" y1="30" x2="94" y2="58"/><line x1="16" y1="30" x2="100" y2="30"/></svg>
+      <div class="label">Gates</div>
+    </div>
+  </div>
+
+  <div class="ctabar">
+    <!-- EDIT: call to action wording -->
+    <div class="cta-text">Get a free<br>site quote</div>
+    <!-- EDIT: replace with your real phone / website / handle -->
+    <div class="cta-contact">
+      +234 XXX XXX XXXX<br>
+      www.zodoutdoorstructures.com<br>
+      @zodoutdoorstructures
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
